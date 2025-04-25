@@ -15,6 +15,9 @@ INSERT INTO ADRESSE (ADRESSENR, STRASSE, HAURSNR, POSTLEITZAHL, ORT, STADT, LAND
 INSERT INTO ADRESSE (ADRESSENR, STRASSE, HAURSNR, POSTLEITZAHL, ORT, STADT, LAND) VALUES (3011, 'Dorfstraße', '74', '24354', 'Weseby', 'Hamburg', 'DEUTSCHLAND'); -- TODO stadt
 INSERT INTO ADRESSE (ADRESSENR, STRASSE, HAURSNR, POSTLEITZAHL, ORT, STADT, LAND) VALUES (3012, 'Westerjork 74', '76', '21635', 'Jork', 'Hamburg', 'DEUTSCHLAND'); -- TODO stadt
 INSERT INTO ADRESSE (ADRESSENR, STRASSE, HAURSNR, POSTLEITZAHL, ORT, STADT, LAND) VALUES (3013, 'Molkereiwegkundekunde', '13', '19217', 'Dechow', 'Hamburg', 'DEUTSCHLAND'); -- TODO stadt
+INSERT INTO ADRESSE (ADRESSENR, STRASSE, HAURSNR, POSTLEITZAHL, ORT, STADT, LAND) VALUES (3014, 'Nudelstrasse', '13', '21109', 'Hamburg', 'Hamburg', 'DEUTSCHLAND');
+INSERT INTO ADRESSE (ADRESSENR, STRASSE, HAURSNR, POSTLEITZAHL, ORT, STADT, LAND) VALUES (3015, 'Fischstrasse', '27', '21109', 'Hamburg', 'Hamburg', 'DEUTSCHLAND');
+INSERT INTO ADRESSE (ADRESSENR, STRASSE, HAURSNR, POSTLEITZAHL, ORT, STADT, LAND) VALUES (3016, 'Importstrasse', '16', '21109', 'Hamburg', 'Hamburg', 'DEUTSCHLAND');
 
 INSERT INTO LOGIN (USERNAME, PASSHASH, SECURITYANSWER) VALUES ('wellensteyn', 'ASJKDASKJD921717AJSKD', 'MOMMY');
 INSERT INTO LOGIN (USERNAME, PASSHASH, SECURITYANSWER) VALUES ('foede', 'ASJKDASKJD921717AJSKD', 'MOMMY');
@@ -43,7 +46,14 @@ INSERT INTO NAHRUNGSBOX (BOXNR, BEZEICHNUNG, BESCHREIBUNG) VALUES (1, 'vegan', '
 
 INSERT INTO BESTELLUNG_BOX (BESTELLNR, BOXNR, MENGE) VALUES (1001, 1, 1);
 
-INSERT INTO REZEPT (REZEPTNR, NAME, BESCHREIBUNG, VORGEHEN) VALUES (1, 'Lasagne', 'Eine Lasagne', 'mach Lasagne!');
+INSERT INTO REZEPT (REZEPTNR, NAME, BESCHREIBUNG, VORGEHEN) VALUES (1,
+                                                                    'Lachslasagne',
+                                                                    'Eine Lachs Lasagne',
+                                                                    'Den Spinat 5 min vorgaren, auspressen bis er ganz trocken ist und würzen.
+Den Lachs etwas auftauen lassen, in kleine Stücke schneiden und mit Zitrone, Salz und Pfeffer würzen.
+Für die Bechamel-Soße wird die Butter im Topf erhitzt, das Mehl verrührt und mit der Milch aufgegossen. Die Brühe dazugeben und 5 min. kochen lassen. Danach die Sahne dazurühren und nochmals aufkochen lassen.
+Schließlich den Parmesan hinzufügen und mit Pfeffer und Muskat abschmecken. Jetzt alles abwechselnd in eine feuerfeste Form schichten, zuerst die Soße, dann Lasagneblätter, Soße, Spinat, Lachs, Käse, Lasagneblätter, usw. Letzte Schicht ist Soße.
+Die Lasagne anschließend bei 200 Grad 45 min. in den Backofen.');
 
 INSERT INTO NAHRUNGSBOX_REZEPT (BOXNR, REZEPTNR, MENGE_REZEPTE) VALUES (1, 1, 1);
 
@@ -51,6 +61,10 @@ INSERT INTO LIEFERANT (LIEFNR, ADRESSNR, NAME) VALUES (101, 3002, 'bananen hof')
 INSERT INTO LIEFERANT (LIEFNR, ADRESSNR, NAME) VALUES (102, 3011, 'Bio-Hof Müller'); -- '04354-9080', 'mueller@biohof.de'
 INSERT INTO LIEFERANT (LIEFNR, ADRESSNR, NAME) VALUES (103, 3012, 'Obst-Hof Altes Land'); -- '04162-4523', 'info@biohof-altesland.de'
 INSERT INTO LIEFERANT (LIEFNR, ADRESSNR, NAME) VALUES (104, 3013, 'Molkerei Henning'); -- '038873-8976', 'info@molkerei-henning.de'
+INSERT INTO LIEFERANT (LIEFNR, ADRESSNR, NAME) VALUES (105, 3014, 'Nudel Fabrik'); -- '038873-8976', 'info@molkerei-henning.de'
+INSERT INTO LIEFERANT (LIEFNR, ADRESSNR, NAME) VALUES (106, 3015, 'Fischerei'); -- '038873-8976', 'info@molkerei-henning.de'
+INSERT INTO LIEFERANT (LIEFNR, ADRESSNR, NAME) VALUES (107, 3016, 'Importeur'); -- '038873-8976', 'info@molkerei-henning.de'
+
 
 INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1000, 101, 'Banane', 'Eine gelbe banane', 'einzelne bananae', 5, 1.20, 0.1, 5.8, 2.7, 1.7, 7);
 
@@ -76,6 +90,19 @@ INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, EINHEIT, BESTAND,
 INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (6408, 102, 'Couscous',          '', 'Packung',  15,  1.9,      0.6,67,     12,    0.2,      351   );
 INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (7043, 101, 'Gemüsebrühe',       '', 'Würfel',   4000,0.2,      0.5,0.5,    0.5,   0.1,      1     );
 INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (6300, 103, 'Kichererbsen',      '', 'Dose',     400, 1.0,      1.3,21.2,   9,     6,        150   );
+
+-- TODO
+-- ernährungskategorie
+-- alergen
+-- rezept
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1007, 102, 'Spinat',            'frisch',                             'Packung',  100,   1.2,     1.2,    2,  2,      0.4,    23);
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1008, 106, 'Lachs',             'Tiefgekühlt',                        'Packung',  50,    5.0,     6.0,    0,  20,     10,     200);
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1009, 105, 'Lasagne Nudeln',    'Getrocknet, aus Hartweizengrieß',    'Packung',  100,   1.5,     1.5,    15, 3,      1,      80);
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1011, 102, 'Mehl',              'Weizenmehl Type 405',                'Packung',  100,   0.5,     0.25,   7,  1,      0,      30);
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1014, 104, 'Sahne',             '',                                   'Flasche',  200,   1.0,     1.2,    3,  2,      15,     150);
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1015, 104, 'Parmesan',          '',                                   'Stück',    100,   2.5,     1.6,    0,  3,      7,      80);
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1016, 107, 'Zitrone',           'frisch',                             'Stück',    200,   0.3,     0.15,   2,  0.5,    0.1,    12);
+
 
 INSERT INTO REZEPT_ZUTAT (REZEPTNR, ZUTATNR, MENGE) VALUES (1, 1000, 1);
 
