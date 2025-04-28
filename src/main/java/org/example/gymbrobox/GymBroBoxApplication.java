@@ -22,14 +22,20 @@ public class GymBroBoxApplication {
         System.out.println("Lieferant: " + testRepository.getLieferantCount());
 
         RecipeRepo recipeRepo = context.getBean(RecipeRepo.class);
-        Recipie recipie = recipeRepo.getRecipeByName("test");
+        Recipie recipie = recipeRepo.getRecipeByName("lachslasagne");
 
-        System.out.println(recipie.getName());
-        List<Ingredients> ingredients = recipie.getIngredients();
-        for (Ingredients ingredient : ingredients) {
-            System.out.println(ingredient.getName() + ", " + ingredient.getWeight() + ", " + ingredient.getUnit());
+
+        if (recipie != null) {
+            System.out.println(recipie.getName());
+            List<Ingredients> ingredients = recipie.getIngredients();
+            for (Ingredients ingredient : ingredients) {
+                System.out.println(ingredient.getName() + ", " + ingredient.getWeight() + ", " + ingredient.getUnit());
+            }
+            System.out.println();
+        } else {
+            System.out.println("empty");
         }
-        System.out.println();
+
 
 
     }
