@@ -36,3 +36,46 @@
     transform: rotate(360deg);
   }
 }
+
+.header-section {
+  background-color: hsl(321, 19%, 36%);
+  font-family: "Sour Gummy", sans-serif;
+font-optical-sizing: auto;
+
+
+}
+
+.accountbutton {
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.accountbutton:hover {
+  transform: scale(1.05);
+}
+
+
+.account-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+
+@media (max-width: 576px) {
+  .header-section h1 {
+    font-size: 1.5rem;
+    text-align: center;
+    width: 100%;
+  }
+
+  .accountbutton {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+}
