@@ -14,18 +14,6 @@ public class Recipie {
     List<NutritionCat> nutritionCat;
     List<Nutrients> nutrients;
 
-    public Recipie(String name, String description, String preparation, double co2, double price, List<Ingredients> ingredients, List<Allergy> allergy, List<NutritionCat> nutritionCat, List<Nutrients> nutrients) {
-        this.name = name;
-        this.description = description;
-        this.preparation = preparation;
-        this.co2 = co2;
-        this.price = price;
-        this.ingredients = ingredients;
-        this.allergy = allergy;
-        this.nutritionCat = nutritionCat;
-        this.nutrients = nutrients;
-    }
-
     public Recipie() {
     }
 
