@@ -2,7 +2,7 @@ package org.example.gymbrobox.model;
 
 import java.util.List;
 
-public class Recipie {
+public class Recipe {
 
     String name;
     String description;
@@ -14,7 +14,7 @@ public class Recipie {
     List<NutritionCat> nutritionCat;
     List<Nutrients> nutrients;
 
-    public Recipie() {
+    public Recipe() {
     }
 
     public String getName() {

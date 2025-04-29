@@ -1,24 +1,24 @@
 package org.example.gymbrobox.database.rowMapper;
 
-import org.example.gymbrobox.model.Recipie;
+import org.example.gymbrobox.model.Recipe;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class RecipieRowMapper implements RowMapper<Recipie> {
+public class RecipieRowMapper implements RowMapper<Recipe> {
 
 
     @Override
-    public Recipie mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Recipie recipie = new Recipie();
+    public Recipe mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Recipe recipe = new Recipe();
 
-        recipie.setName(rs.getString("BEZEICHNUNG"));
-        recipie.setDescription(rs.getString("BESCHREIBUNG"));
-        recipie.setPreparation(rs.getString("PREPARATION"));
-        recipie.setCo2(rs.getDouble("CO2"));
-        recipie.setPrice(rs.getDouble("PRICE"));
+        recipe.setName(rs.getString("NAME"));
+        //recipe.setDescription(rs.getString("BESCHREIBUNG"));
+        recipe.setPreparation(rs.getString("VORGEHEN"));
+        //recipe.setCo2(rs.getDouble("CO2"));
+        //recipe.setPrice(rs.getDouble("PRICE"));
 
-        return recipie;
+        return recipe;
     }
 }

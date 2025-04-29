@@ -15,7 +15,7 @@ public class IngredientRowMapper implements RowMapper<Ingredients> {
         ingredient.setName(rs.getString("BEZEICHNUNG"));
         ingredient.setPrice(rs.getDouble("NETTOPREIS"));
         //ingredient.setQuantity(rs.getInt("MENGE"));
-        ingredient.setWeight(rs.getDouble("GEWICHT"));
+        ingredient.setWeight(rs.getDouble("MENGE"));
         ingredient.setUnit(rs.getString("EINHEIT"));
         return ingredient;
     }

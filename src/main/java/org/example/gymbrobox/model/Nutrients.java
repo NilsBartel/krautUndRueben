@@ -3,6 +3,15 @@ package org.example.gymbrobox.model;
 public class Nutrients {
     String name;
     String description;
+    double value;
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
 
     public String getName() {
         return name;
