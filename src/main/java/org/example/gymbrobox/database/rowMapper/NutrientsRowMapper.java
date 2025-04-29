@@ -18,6 +18,5 @@ public class NutrientsRowMapper implements RowMapper<Nutrients> {
         nutrients.setDescription(rs.getString("BESCHREIBUNG"));
 
         return nutrients;
-
     }
 }

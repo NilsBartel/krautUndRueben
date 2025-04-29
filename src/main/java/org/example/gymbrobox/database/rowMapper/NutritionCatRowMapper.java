@@ -16,7 +16,6 @@ public class NutritionCatRowMapper implements RowMapper<NutritionCat> {
         nutritionCat.setDescription(rs.getString("BESCHREIBUNG"));
 
         return nutritionCat;
-
     }
 
 }

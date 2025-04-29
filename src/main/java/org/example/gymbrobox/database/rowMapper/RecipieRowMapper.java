@@ -19,7 +19,6 @@ public class RecipieRowMapper implements RowMapper<Recipie> {
         recipie.setCo2(rs.getDouble("CO2"));
         recipie.setPrice(rs.getDouble("PRICE"));
 
-
         return recipie;
     }
 }
