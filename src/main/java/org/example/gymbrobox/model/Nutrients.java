@@ -1,9 +1,9 @@
 package org.example.gymbrobox.model;
 
 public class Nutrients {
-    String name;
-    String description;
-    double value;
+    private String name;
+    private String description;
+    private double value;
 
     public double getValue() {
         return value;

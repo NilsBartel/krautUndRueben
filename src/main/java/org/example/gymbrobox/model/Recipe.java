@@ -4,15 +4,15 @@ import java.util.List;
 
 public class Recipe {
 
-    String name;
-    String description;
-    String preparation;
-    double co2;
-    double price;
-    List<Ingredients> ingredients;
-    List<Allergy> allergy;
-    List<NutritionCat> nutritionCat;
-    List<Nutrients> nutrients;
+    private String name;
+    private String description;
+    private String preparation;
+    private double co2;
+    private double price;
+    private List<Ingredients> ingredients;
+    private List<Allergy> allergy;
+    private List<NutritionCat> nutritionCat;
+    private List<Nutrients> nutrients;
 
     public Recipe() {
     }

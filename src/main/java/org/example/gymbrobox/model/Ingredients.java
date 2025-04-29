@@ -2,11 +2,11 @@ package org.example.gymbrobox.model;
 
 public class Ingredients {
 
-    String name;
-    double weight;
-    String unit;
-    double price;
-    int quantity;
+    private String name;
+    private double weight;
+    private String unit;
+    private double price;
+    private int quantity;
 
     public String getName() {
         return name;
