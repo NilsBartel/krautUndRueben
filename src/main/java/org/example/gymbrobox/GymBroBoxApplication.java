@@ -1,8 +1,10 @@
 package org.example.gymbrobox;
 
 import org.example.gymbrobox.Service.RecipeService;
+import org.example.gymbrobox.Service.UserService;
 import org.example.gymbrobox.database.RecipeRepo;
 import org.example.gymbrobox.database.TestRepository;
+import org.example.gymbrobox.database.UserRepo;
 import org.example.gymbrobox.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -45,6 +47,11 @@ public class GymBroBoxApplication {
         recipeService.printRecipe(recipeService.createRecipe());
 
 
+        UserRepo userRepo = context.getBean(UserRepo.class);
+        UserService userService = context.getBean(UserService.class);
+        User user = new User();
+        user = userRepo.findByUsername("wellensteyn");
+        userService.printUser(user);
 
 
 

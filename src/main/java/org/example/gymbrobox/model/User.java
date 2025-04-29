@@ -11,7 +11,7 @@ public class User {
     private Date dateOfBirth;
     private boolean abo;
     private String street;
-    private int houseNumber;
+    private String houseNumber;
     private String plz;
     private String city;
     private String country;
@@ -83,11 +83,11 @@ public class User {
         this.street = street;
     }
 
-    public int getHouseNumber() {
+    public String getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
 
