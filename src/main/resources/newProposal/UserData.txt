@@ -1,0 +1,10 @@
+Username:       Password:       SecurityAnswer:
+wellensteyn,    Password,       Dotti
+foede,          Password,       Dotti
+leberer,        Password,       Dotti
+soerensen,      Password,       Dotti
+schnitter,      Password,       Dotti
+maurer,         Password,       Dotti
+gessert,        Password,       Dotti
+haessig,        Password,       Dotti
+urocki,         Password,       Dotti

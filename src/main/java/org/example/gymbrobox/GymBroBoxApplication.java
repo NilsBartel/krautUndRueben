@@ -1,5 +1,6 @@
 package org.example.gymbrobox;
 
+import org.example.gymbrobox.Service.HashService;
 import org.example.gymbrobox.Service.RecipeService;
 import org.example.gymbrobox.Service.UserService;
 import org.example.gymbrobox.database.RecipeRepo;
@@ -21,10 +22,11 @@ public class GymBroBoxApplication {
         ApplicationContext context = SpringApplication.run(GymBroBoxApplication.class, args);
 
 
-        TestRepository testRepository = context.getBean(TestRepository.class);
-        System.out.println("Kunde: " + testRepository.getKundeCount());
-        System.out.println("Lieferant: " + testRepository.getLieferantCount());
-        System.out.println();
+
+//        TestRepository testRepository = context.getBean(TestRepository.class);
+//        System.out.println("Kunde: " + testRepository.getKundeCount());
+//        System.out.println("Lieferant: " + testRepository.getLieferantCount());
+//        System.out.println();
 
 //        RecipeRepo recipeRepo = context.getBean(RecipeRepo.class);
 //        Recipe recipe = recipeRepo.getRecipeByName("lachslasagne");
@@ -43,15 +45,15 @@ public class GymBroBoxApplication {
 //        }
 
 
-        RecipeService recipeService = context.getBean(RecipeService.class);
-        recipeService.printRecipe(recipeService.createRecipe());
-
-
-        UserRepo userRepo = context.getBean(UserRepo.class);
-        UserService userService = context.getBean(UserService.class);
-        User user = new User();
-        user = userRepo.findByUsername("wellensteyn");
-        userService.printUser(user);
+//        RecipeService recipeService = context.getBean(RecipeService.class);
+//        recipeService.printRecipe(recipeService.createRecipe());
+//
+//
+//        UserRepo userRepo = context.getBean(UserRepo.class);
+//        UserService userService = context.getBean(UserService.class);
+//        User user = new User();
+//        user = userRepo.findByUsername("wellensteyn");
+//        userService.printUser(user);
 
 
 
