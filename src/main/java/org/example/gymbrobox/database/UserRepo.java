@@ -16,7 +16,6 @@ public class UserRepo {
     }
 
     public User findByUsername(String username) {
-        //String sql1 = "SELECT k.*, a.*, l.USERNAME FROM KUNDE k LEFT JOIN ADRESSE a ON k.ADRESSNR = a.ADRESSENR LEFT JOIN LOGIN l ON k.USERNAME = l.USERNAME WHERE k.USERNAME = :username;";
         String sql = "SELECT k.*, a.*, l.USERNAME " +
                             "FROM KUNDE k " +
                             "LEFT JOIN ADRESSE a ON k.ADRESSNR = a.ADRESSENR " +
