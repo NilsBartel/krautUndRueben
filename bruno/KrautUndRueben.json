@@ -1,0 +1,81 @@
+{
+  "name": "KrautUndRueben",
+  "version": "1",
+  "items": [
+    {
+      "type": "folder",
+      "name": "User",
+      "items": [
+        {
+          "type": "http",
+          "name": "getUserByUsername",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/user",
+            "method": "GET",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Recipe",
+      "items": [
+        {
+          "type": "http",
+          "name": "getRecipeByName",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/recipe?name=test",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "name",
+                "value": "test",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "environments": [],
+  "brunoConfig": {
+    "version": "1",
+    "name": "KrautUndRueben",
+    "type": "collection",
+    "ignore": [
+      "node_modules",
+      ".git"
+    ]
+  }
+}
