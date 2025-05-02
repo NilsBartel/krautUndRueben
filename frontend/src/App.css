@@ -32,10 +32,12 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 .custom-login-button {
   background-color: #6d4a61;
   border-color: #6d4a61;
@@ -49,7 +51,8 @@
   background-color: #5a3c50;
   border-color: #5a3c50;
 }
-.btn-primary{
+
+.btn-primary {
   background-color: #6d4a61;
   border-color: #6d4a61;
   color: white;
@@ -58,12 +61,12 @@
   border-radius: 6px;
 }
 
-.btn-primary{
+.btn-primary {
   background-color: #5a3c50;
   border-color: #5a3c50;
 }
 
-.btn-secondary{
+.btn-secondary {
   background-color: #6d4a61;
   border-color: #6d4a61;
   color: white;
@@ -71,7 +74,8 @@
   font-weight: bold;
   border-radius: 6px;
 }
-.btn-secondary:hover{
+
+.btn-secondary:hover {
   background-color: #5a3c50;
   border-color: #5a3c50;
 }
@@ -83,13 +87,18 @@
   padding: 20px;
   background-color: hsl(321, 19%, 36%);
   font-family: "Sour Gummy", sans-serif;
-font-optical-sizing: auto;
+  font-optical-sizing: auto;
 }
+
 
 .header-section h1 {
   margin: 0;
   font-size: 2rem;
   color: white;
+}
+
+.header-section h1:hover {
+  cursor: pointer;
 }
 
 
@@ -118,4 +127,3 @@ font-optical-sizing: auto;
     text-align: center;
   }
 }
-

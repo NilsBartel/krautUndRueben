@@ -10,10 +10,10 @@ function Home() {
 
 
   const boxData = [
-    { name: 'Veggi Box', image: 'veggi.png' },
-    { name: 'Vegan Box', image: 'vegan.png' },
-    { name: 'Gym Bro Box', image: 'gym.png' },
-    { name: 'Mixed Food Box', image: 'mixed.png' },
+    { name: 'Veggi Box', link: "/veggi" },
+    { name: 'Vegan Box', link: "/vegan" },
+    { name: 'Gym Bro Box', link: "/gymbro" },
+    { name: 'Mixed Food Box', link: "/mixed" },
   ];
 
 
@@ -52,7 +52,7 @@ function Home() {
 
                 <div className="card-body">
                   <h5 className="card-title">{box.name}</h5>
-                  <button className="btn btn-primary" onClick={() => alert(`${box.name} gewählt!`)}>
+                  <button className="btn btn-primary" onClick={() => navigate(box.link)}>
                     Auswählen
                   </button>
                 </div>

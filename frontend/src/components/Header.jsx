@@ -9,8 +9,8 @@ function Header() {
   };
 
   return (
-    <div className="container-fluid p-5 text-white text-center header-section">
-      <h1>KRAUT UND RÜBEN</h1>
+    <div className="container-fluid p-5 text-white text-center header-section" >
+      <h1 onClick={() => navigate('/')}>KRAUT UND RÜBEN</h1>
       {location.pathname === '/' && (
         <button
           className="accountbutton"

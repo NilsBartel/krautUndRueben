@@ -3,9 +3,9 @@ import Header from '../components/Header';
 
 
 
-function Customized() {
+function Mixed() {
     return (<> <Header /> </>);
 }
 
 
-export default Customized;
+export default Mixed;
