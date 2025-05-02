@@ -1,6 +1,6 @@
 // src/components/Home.js
 import Header from '../components/Header';
-import '../App.css'; // Falls du allgemeines CSS dort hast
+import '../App.css';
 import { useNavigate } from 'react-router-dom';
 
 function Home() {
