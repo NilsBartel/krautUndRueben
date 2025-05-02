@@ -12,7 +12,8 @@ public class User {
     private boolean abo;
     private String street;
     private String houseNumber;
-    private String plz;
+    private String zipCode;
+    private String cityDistrict;
     private String city;
     private String country;
 
@@ -91,12 +92,20 @@ public class User {
         this.houseNumber = houseNumber;
     }
 
-    public String getPlz() {
-        return plz;
+    public String getZipCode() {
+        return zipCode;
     }
 
-    public void setPlz(String plz) {
-        this.plz = plz;
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getCityDistrict() {
+        return cityDistrict;
+    }
+
+    public void setCityDistrict(String cityDistrict) {
+        this.cityDistrict = cityDistrict;
     }
 
     public String getCity() {

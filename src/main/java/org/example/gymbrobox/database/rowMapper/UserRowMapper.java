@@ -20,7 +20,8 @@ public class UserRowMapper implements RowMapper<User> {
         user.setAbo(rs.getBoolean("ABO"));
         user.setStreet(rs.getString("STRASSE"));
         user.setHouseNumber(rs.getString("HAURSNR"));
-        user.setPlz(rs.getString("POSTLEITZAHL"));
+        user.setZipCode(rs.getString("POSTLEITZAHL"));
+        user.setCityDistrict(rs.getString("ORT"));
         user.setCity(rs.getString("STADT"));
         user.setCountry(rs.getString("LAND"));
 

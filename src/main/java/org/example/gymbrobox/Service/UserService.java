@@ -23,7 +23,8 @@ public class UserService {
         user.setAbo(false);
         user.setStreet("MyStreet");
         user.setHouseNumber("4");
-        user.setPlz("12345");
+        user.setZipCode("12345");
+        user.setCityDistrict("hamburg");
         user.setCity("Hamburg");
         user.setCountry("Deutschland");
 
@@ -43,7 +44,8 @@ public class UserService {
         System.out.println(user.isAbo());
         System.out.println(user.getStreet());
         System.out.println(user.getHouseNumber());
-        System.out.println(user.getPlz());
+        System.out.println(user.getZipCode());
+        System.out.println(user.getCityDistrict());
         System.out.println(user.getCity());
         System.out.println(user.getCountry());
 

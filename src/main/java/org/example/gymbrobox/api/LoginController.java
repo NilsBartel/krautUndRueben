@@ -1,15 +1,14 @@
 package org.example.gymbrobox.api;
 
+import org.example.gymbrobox.Service.AuthenticationTokenService;
 import org.example.gymbrobox.Service.LoginService;
-import org.example.gymbrobox.Service.UserService;
+import org.example.gymbrobox.model.CombinedUserUserAccount;
+import org.example.gymbrobox.model.User;
 import org.example.gymbrobox.model.UserAccount;
 import org.example.gymbrobox.model.UserAccountWithSecurity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.servlet.function.ServerRequest;
 
 import java.util.Map;
 
@@ -17,9 +16,11 @@ import java.util.Map;
 public class LoginController {
 
     private final LoginService loginService;
+    private final AuthenticationTokenService authenticationTokenService;
 
-    public LoginController(LoginService loginService) {
+    public LoginController(LoginService loginService, AuthenticationTokenService authenticationTokenService) {
         this.loginService = loginService;
+        this.authenticationTokenService = authenticationTokenService;
     }
 
 
@@ -33,14 +34,36 @@ public class LoginController {
         if (token.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found, or password incorrect");
         }
-
         return Map.of("token", token);
     }
 
     @PostMapping("/account/register")
     @ResponseBody
-    public String register(@RequestBody UserAccountWithSecurity userAccount) {
+    public String register(@RequestBody CombinedUserUserAccount combinedUserUserAccount) {
+        User user = combinedUserUserAccount.getUser();
+        UserAccountWithSecurity userAccount = combinedUserUserAccount.getUserAccount();
 
+        if (!loginService.register(userAccount, user)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "DatabaseError");
+        }
+
+        return "success";
+    }
+
+    @PostMapping("/account/resetPassword")
+    public String resetPassword(@RequestBody UserAccountWithSecurity userAccount) {
+        if (!loginService.resetPassword(userAccount)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong Security Answer");
+        }
+
+        return "success";
+    }
+
+    @PostMapping("/logout")
+    public String logout(@RequestHeader("token") String token) {
+        if (!authenticationTokenService.logout(token)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        }
 
         return "success";
     }
