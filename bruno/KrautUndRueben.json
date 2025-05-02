@@ -71,6 +71,36 @@
               "mode": "none"
             }
           }
+        },
+        {
+          "type": "http",
+          "name": "filter Recipe",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080?recipe/filter",
+            "method": "GET",
+            "headers": [],
+            "params": [
+              {
+                "name": "recipe/filter",
+                "value": "",
+                "type": "query",
+                "enabled": true
+              }
+            ],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
         }
       ]
     },
