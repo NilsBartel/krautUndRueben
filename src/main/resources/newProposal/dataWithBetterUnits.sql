@@ -55,7 +55,7 @@ Für die Bechamel-Soße wird die Butter im Topf erhitzt, das Mehl verrührt und 
 Schließlich den Parmesan hinzufügen und mit Pfeffer und Muskat abschmecken. Jetzt alles abwechselnd in eine feuerfeste Form schichten, zuerst die Soße, dann Lasagneblätter, Soße, Spinat, Lachs, Käse, Lasagneblätter, usw. Letzte Schicht ist Soße.
 Die Lasagne anschließend bei 200 Grad 45 min. in den Backofen.');
 
-INSERT INTO NAHRUNGSBOX_REZEPT (BOXNR, REZEPTNR, MENGE_REZEPTE) VALUES (1, 1, 1);
+INSERT INTO NAHRUNGSBOX_REZEPT (BOXNR, REZEPTNR, MENGE_REZEPTE) VALUES (1, 1, 1); -- TODO: es ist menge portionen, nicht MENGE_REZEPTE
 
 INSERT INTO LIEFERANT (LIEFNR, ADRESSNR, NAME) VALUES (101, 3002, 'bananen hof');
 INSERT INTO LIEFERANT (LIEFNR, ADRESSNR, NAME) VALUES (102, 3011, 'Bio-Hof Müller'); -- '04354-9080', 'mueller@biohof.de'

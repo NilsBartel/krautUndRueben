@@ -31,7 +31,10 @@ public class RecipeController {
     @Parameters({
             @Parameter(name = "ernährungsart", description = "frutarisch, vegan, vegetarian, mischKost ", example = "vegan"),
             @Parameter(name = "kohlenhydrate", description = "low, high", example = "low"),
-            @Parameter(name = "protein", description = "low, high", example = "high")
+            @Parameter(name = "kohlenhydrateLimit", description = "int, as limit for carbs per recipe", example = "500"),
+            @Parameter(name = "ingredientLimit", description = "int, as limit for ingredients per recipe", example = "500"),
+            @Parameter(name = "protein", description = "low, high", example = "high"),
+            @Parameter(name = "amount", description = "int, as number of recipes", example = "1")
     })
     @GetMapping("/recipe/filter")
     @ResponseBody
