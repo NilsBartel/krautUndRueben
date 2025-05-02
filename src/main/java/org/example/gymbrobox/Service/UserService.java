@@ -3,7 +3,6 @@ package org.example.gymbrobox.Service;
 import org.example.gymbrobox.model.User;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Service
@@ -19,7 +18,7 @@ public class UserService {
         user.setLastName("Doe");
         user.setEmail("john.doe@gmail.com");
         user.setPhoneNumber("040300300");
-        user.setDateOfBirth(Date.valueOf(LocalDate.of(2025, 4, 29)));
+        user.setDateOfBirth(LocalDate.of(2025, 4, 29));
         user.setAbo(false);
         user.setStreet("MyStreet");
         user.setHouseNumber("4");

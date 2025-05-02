@@ -27,7 +27,6 @@ public class UserRepo {
                 .addValue("username", username);
 
         User user = template.queryForObject(sql, params, new UserRowMapper());
-        System.out.println(user);
         return user;
     }
 

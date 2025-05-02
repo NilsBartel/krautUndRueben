@@ -1,6 +1,7 @@
 package org.example.gymbrobox.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class User {
     private String userName;
@@ -8,7 +9,7 @@ public class User {
     private String lastName;
     private String email;
     private String phoneNumber;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private boolean abo;
     private String street;
     private String houseNumber;
@@ -60,11 +61,11 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
