@@ -11,10 +11,17 @@
           "name": "getUserByUsername",
           "seq": 1,
           "request": {
-            "url": "http://localhost:8080/user",
+            "url": "http://localhost:8080/user?username=nilsss",
             "method": "GET",
             "headers": [],
-            "params": [],
+            "params": [
+              {
+                "name": "username",
+                "value": "nilsss",
+                "type": "query",
+                "enabled": true
+              }
+            ],
             "body": {
               "mode": "none",
               "formUrlEncoded": [],
@@ -53,6 +60,107 @@
             ],
             "body": {
               "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "folder",
+      "name": "Login",
+      "items": [
+        {
+          "type": "http",
+          "name": "Login",
+          "seq": 1,
+          "request": {
+            "url": "http://localhost:8080/account/login",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\"username\":\"wellensteyn\", \"password\":\"Password\"}",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Register",
+          "seq": 2,
+          "request": {
+            "url": "http://localhost:8080/account/register",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\n  \"userAccount\": {\n    \"username\":\"nilsss\",\n    \"password\":\"Password\",\n    \"securityAnswer\":\"Dotti\"\n  },\n  \"user\": {\n    \"firstName\":\"nils\", \n    \"lastName\":\"bartel\", \n    \"email\":\"nb@gmail.com\", \n    \"phoneNumber\":\"040110110\", \n    \"dateOfBirth\":\"2000-05-31\", \n    \"street\":\"myStret\", \n    \"houseNumber\":\"69\", \n    \"zipCode\":\"21149\", \n    \"cityDistrict\":\"Hamburg\",\n    \"city\":\"Hamburg\", \n    \"country\":\"Deutschland\"\n  }\n}\n",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Logout",
+          "seq": 3,
+          "request": {
+            "url": "http:localhost:8080/logout",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "none",
+              "formUrlEncoded": [],
+              "multipartForm": []
+            },
+            "script": {},
+            "vars": {},
+            "assertions": [],
+            "tests": "",
+            "auth": {
+              "mode": "none"
+            }
+          }
+        },
+        {
+          "type": "http",
+          "name": "Reset Password",
+          "seq": 4,
+          "request": {
+            "url": "http://localhost:8080/account/resetPassword",
+            "method": "POST",
+            "headers": [],
+            "params": [],
+            "body": {
+              "mode": "json",
+              "json": "{\"username\":\"wellensteyn\", \"password\":\"Password\", \"securityAnswer\":\"Daotti\"}",
               "formUrlEncoded": [],
               "multipartForm": []
             },
