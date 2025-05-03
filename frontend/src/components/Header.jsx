@@ -2,16 +2,31 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import "./Header.css"
 import ShoppingCartModal from './ShoppingCartModal';
 import { createPortal } from 'react-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
   const [cartOpen, setCartOpen] = useState(false);
+  const [itemCount, setItemCount] = useState(0);
 
   const handleAccountClick = () => {
     navigate('/account');
   };
+
+  useEffect(() => {
+    updateCount();
+
+    window.addEventListener('storage', updateCount)
+
+    return () => {
+      window.removeEventListener('storage', updateCount)
+    }
+  }, []);
+
+  function updateCount() {
+    setItemCount(JSON.parse(localStorage.getItem("cart")).items.length)
+  }
 
   return (
     <>
@@ -24,6 +39,8 @@ function Header() {
             aria-label="Shopping Cart"
             onClick={() => setCartOpen(true)}
           >
+            {itemCount > 0 ? <div className='cartItemCount'><p>{itemCount}</p></div> : <></>}
+
             <img src='shoppingcart.png' alt='Shopping Cart' className='header-img' />
           </button>
           <button

@@ -9,7 +9,13 @@ function ShoppingCartModal(props) {
 
 
     useEffect(() => {
-        setCartItems(JSON.parse(localStorage.getItem("cart")).items)
+        updateCart();
+
+        window.addEventListener('storage', updateCart)
+
+        return () => {
+            window.removeEventListener('storage', updateCart)
+        }
     }, []);
 
     useEffect(() => {
@@ -17,8 +23,8 @@ function ShoppingCartModal(props) {
         props.isOpen ? dialog.current?.showModal() : dialog.current.close();
     }, [props.isOpen]);
 
-    function removeItem(itemId) {
-        const other = cartItems.filter((item) => item.id != itemId)
+    function removeItem(key) {
+        const other = cartItems.filter((item) => item.key != key)
         setCartItems(other);
         console.log(other);
 
@@ -28,6 +34,11 @@ function ShoppingCartModal(props) {
         localStorage.setItem("cart", JSON.stringify({
             items: other
         }));
+        window.dispatchEvent(new Event('storage'))
+    }
+
+    function updateCart() {
+        setCartItems(JSON.parse(localStorage.getItem("cart")).items)
     }
 
     return (
@@ -42,7 +53,7 @@ function ShoppingCartModal(props) {
                 {cartItems.map((item, index) => (
                     <div className="cartItem" key={index}>
                         <p>{item.name}</p>
-                        <button onClick={() => removeItem(item.id)}>Entfernen</button>
+                        <button onClick={() => removeItem(item.key)}>Entfernen</button>
                     </div>
                 ))}
             </dialog>

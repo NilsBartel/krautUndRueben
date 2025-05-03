@@ -21,3 +21,11 @@
     background-color: rgba(0, 0, 0, 0.5);
     transition: opacity 0.1s cubic-bezier(0.2, 0, 0.38, 0.9);
 }
+
+.cartItem {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin: 10px;
+}
