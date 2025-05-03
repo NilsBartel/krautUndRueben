@@ -1,0 +1,23 @@
+.cartModal {
+    position: fixed;
+    z-index: 100;
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 80%;
+    height: 100vh;
+    top: 0;
+    right: 0;
+    /* left: auto; */
+    background-color: white;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    transform: translateX(100%);
+    transition: transform 0.1s cubic-bezier(0.2, 0, 0.38, 0.9);
+    max-height: none;
+    /* Default is calc(100% - 2em - 6px) */
+}
+
+.cartModal::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: opacity 0.1s cubic-bezier(0.2, 0, 0.38, 0.9);
+}

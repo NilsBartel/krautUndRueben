@@ -18,6 +18,8 @@ function Account() {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [country, setCountry] = useState('');
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -31,6 +33,14 @@ function Account() {
       onLogin(e);
 
     }
+    if (isResettingPassword) {
+      onResetPassword(e);
+    } else if (isRegistering) {
+      onRegistration(e);
+    } else {
+      onLogin(e);
+    }
+
 
 
     function onLogin(e) {
@@ -115,6 +125,33 @@ function Account() {
       document.cookie = `token=${token}`
     }
 
+    function onResetPassword(e) {
+      let form = e.target;
+
+      fetch(apiPath + "/account/reset-password", {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: form.username.value,
+          securityAnswer: form.securityAnswer.value,
+          newPassword: form.newPassword.value
+        })
+      })
+        .then(response => response.json().then(json => response.ok ? json : Promise.reject(json)))
+        .then(response => {
+          alert("Passwort erfolgreich geändert!");
+          setIsResettingPassword(false);
+          setPassword('');
+        })
+        .catch(response => {
+          alert(response.error);
+        });
+    }
+
+
   };
 
   return (
@@ -148,17 +185,77 @@ function Account() {
             />
           </div>
 
-          <div className="mb-3">
-            <label htmlFor="password" className="form-label">Passwort</label>
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
+
+          {!isRegistering && !isResettingPassword && (
+            <>
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">Passwort</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="mb-3 text-end">
+                <button
+                  type="button"
+                  className="btn btn-link p-0"
+                  onClick={() => setIsResettingPassword(true)}
+                >
+                  Passwort vergessen?
+                </button>
+              </div>
+            </>
+          )}
+          {isResettingPassword && (
+            <>
+              <div className="mb-3">
+                <p className="form-text">Wie heißt dein Lieblingskuscheltier?</p>
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="securityAnswer" className="form-label">Antwort auf Sicherheitsfrage</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="securityAnswer"
+                  value={securityAnswer}
+                  onChange={(e) => setSecurityAnswer(e.target.value)}
+                  required
+                />
+
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="newPassword" className="form-label">Neues Passwort</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="newPassword"
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              {isResettingPassword && (
+                <div className="mb-3 text-end">
+                  <button
+                    type="button"
+                    className="btn btn-link p-0"
+                    onClick={() => setIsResettingPassword(false)}
+                  >
+                    Zurück zum Login
+                  </button>
+                </div>
+              )}
+
+            </>
+          )}
+
+
 
           {isRegistering && (
             <>

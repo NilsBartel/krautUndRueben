@@ -1,11 +1,20 @@
+import BoxCreator from '../components/BoxCreator';
 import Header from '../components/Header';
-
-
-
+import { useState } from 'react';
 
 function Veggi() {
-    return (<> <Header /> </>);
+    const boxData = {
+        name: "Veggi Box",
+        id: "veggi"
+    }
+
+    return (
+        <>
+            <Header />
+            <BoxCreator boxData={boxData} />
+        </>
+    );
 }
 
-
 export default Veggi;
+

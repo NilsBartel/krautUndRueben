@@ -1,0 +1,50 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: hsl(321, 19%, 36%);
+    font-family: "Sour Gummy", sans-serif;
+    font-optical-sizing: auto;
+}
+
+
+
+.header h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: white;
+}
+
+.header h1:hover {
+    cursor: pointer;
+}
+
+
+.heeaderButton {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    margin-left: 40px;
+}
+
+.heeaderButton:hover {
+    transform: scale(1.05);
+}
+
+
+.header-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+@media (max-width: 576px) {
+    .header h1 {
+        font-size: 1.5rem;
+        text-align: center;
+    }
+}
