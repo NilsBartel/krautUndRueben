@@ -21,6 +21,8 @@ public class LoginService {
 
     public String login(UserAccount userAccount) {
         String passHash = loginRepo.getPasswordByUsername(userAccount);
+        System.out.println(passHash);
+        System.out.println(userAccount.getPassword());
 
         if (hashService.verify(userAccount.getPassword(), passHash)) {
             return tokenService.create(userAccount.getUsername());
@@ -29,7 +31,12 @@ public class LoginService {
     }
 
     public boolean register(UserAccountWithSecurity userAccount, User user) {
-        return loginRepo.createUser(userAccount, user);
+
+        UserAccountWithSecurity userAccountWithHashedPass = new UserAccountWithSecurity();
+        userAccountWithHashedPass.setUsername(userAccount.getUsername());
+        userAccountWithHashedPass.setPassword(hashService.hash(userAccount.getPassword()));
+        userAccountWithHashedPass.setSecurityAnswer(hashService.hash(userAccount.getSecurityAnswer()));
+        return loginRepo.createUser(userAccountWithHashedPass, user);
     }
 
     public boolean resetPassword(UserAccountWithSecurity userAccount) {

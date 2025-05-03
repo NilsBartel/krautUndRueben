@@ -1,8 +1,8 @@
-# Auswahl aller Zutaten eines Rezepts
+-- Auswahl aller Zutaten eines Rezepts
 SELECT * FROM rezept_zutat rz
 JOIN zutat z
 ON rz.ZutatNr = z.ZutatNr
-# Hier beliebige RezeptNr einfügen
+-- Hier beliebige RezeptNr einfügen
 WHERE rz.RezeptNr IN (1);
 
 # Auswahl aller Rezepte einer bestimmten Ernährungskategorie

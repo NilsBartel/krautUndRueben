@@ -32,22 +32,30 @@ public class LoginController {
         String token = loginService.login(userAccount);
 
         if (token.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User not found, or password incorrect");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login failed");
         }
         return Map.of("token", token);
     }
 
     @PostMapping("/account/register")
     @ResponseBody
-    public String register(@RequestBody CombinedUserUserAccount combinedUserUserAccount) {
+    public Map<String, String> register(@RequestBody CombinedUserUserAccount combinedUserUserAccount) {
         User user = combinedUserUserAccount.getUser();
         UserAccountWithSecurity userAccount = combinedUserUserAccount.getUserAccount();
 
         if (!loginService.register(userAccount, user)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "DatabaseError");
         }
+        UserAccount newUserAccount = new UserAccount();
+        newUserAccount.setUsername(userAccount.getUsername());
+        newUserAccount.setPassword(userAccount.getPassword());
 
-        return "success";
+        String token = loginService.login(newUserAccount);
+        if (token.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login failed");
+        }
+
+        return Map.of("token", token);
     }
 
     @PostMapping("/account/resetPassword")
