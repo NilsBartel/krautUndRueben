@@ -50,10 +50,20 @@ INSERT INTO REZEPT (REZEPTNR, NAME, BESCHREIBUNG, VORGEHEN) VALUES (1,
                                                                     'Lachslasagne',
                                                                     'Eine Lachs Lasagne',
                                                                     'Den Spinat 5 min vorgaren, auspressen bis er ganz trocken ist und würzen.
-Den Lachs etwas auftauen lassen, in kleine Stücke schneiden und mit Zitrone, Salz und Pfeffer würzen.
-Für die Bechamel-Soße wird die Butter im Topf erhitzt, das Mehl verrührt und mit der Milch aufgegossen. Die Brühe dazugeben und 5 min. kochen lassen. Danach die Sahne dazurühren und nochmals aufkochen lassen.
-Schließlich den Parmesan hinzufügen und mit Pfeffer und Muskat abschmecken. Jetzt alles abwechselnd in eine feuerfeste Form schichten, zuerst die Soße, dann Lasagneblätter, Soße, Spinat, Lachs, Käse, Lasagneblätter, usw. Letzte Schicht ist Soße.
-Die Lasagne anschließend bei 200 Grad 45 min. in den Backofen.');
+                                                                                Den Lachs etwas auftauen lassen, in kleine Stücke schneiden und mit Zitrone, Salz und Pfeffer würzen.
+                                                                                Für die Bechamel-Soße wird die Butter im Topf erhitzt, das Mehl verrührt und mit der Milch aufgegossen. Die Brühe dazugeben und 5 min. kochen lassen. Danach die Sahne dazurühren und nochmals aufkochen lassen.
+                                                                                Schließlich den Parmesan hinzufügen und mit Pfeffer und Muskat abschmecken. Jetzt alles abwechselnd in eine feuerfeste Form schichten, zuerst die Soße, dann Lasagneblätter, Soße, Spinat, Lachs, Käse, Lasagneblätter, usw. Letzte Schicht ist Soße.
+                                                                                Die Lasagne anschließend bei 200 Grad 45 min. in den Backofen.');
+INSERT INTO REZEPT (REZEPTNR, NAME, BESCHREIBUNG, VORGEHEN) VALUES (2,
+                                                                    'Kartoffel-Gemüse-Pfanne',
+                                                                    'Eine Gemüse Pfanne mit Kartoffeln',
+                                                                    '1. Kartoffeln schälen, in kleine Würfel schneiden und in leicht gesalzenem Wasser ca. 10 Minuten vorkochen (nicht ganz durchgaren).
+                                                                                2. Zwiebel schälen und in feine Streifen schneiden.
+                                                                                3. Zucchini und Paprika waschen und würfeln.
+                                                                                4. Öl in einer großen Pfanne erhitzen. Zwiebeln darin glasig braten.
+                                                                                5. Vorgekochte Kartoffeln zugeben und ca. 5 Minuten anbraten.
+                                                                                6. Zucchini und Paprika hinzufügen und alles weitere 5–10 Minuten braten, bis das Gemüse gar ist.
+                                                                                7. Mit Salz und Pfeffer abschmecken. Optional mit etwas Butter oder Zitronensaft verfeinern.');
 
 INSERT INTO NAHRUNGSBOX_REZEPT (BOXNR, REZEPTNR, MENGE_REZEPTE) VALUES (1, 1, 1); -- TODO: es ist menge portionen, nicht MENGE_REZEPTE
 
@@ -96,7 +106,23 @@ INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, GEWICHT, EINHEIT,
 INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, GEWICHT, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1017, 104, 'sahne',             '',  200,      'ml',     200,  1.0,     1.2,   3,      2,     15,      150     );
 INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, GEWICHT, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1018, 104, 'parmesan',          '',  200,      'g',      100,  2.5,     1.6,   0,      3,     7,       80      );
 INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, GEWICHT, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1019, 107, 'zitrone',           '',  200,      'g',      200,  0.3,     0.15,  2,      0.5,   0.1,     12      );
-INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, GEWICHT, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1020, 107, 'käse',              '',  200,      'g',      50,   2,       5.7,   3,      25,    33,      400     );
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, GEWICHT, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1020, 107, 'käse',              '',  200,      'g',      50,   2.0,     5.7,   3,      25,    33,      400     );
+
+
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, GEWICHT, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1021, 102, 'hähnchenbrustfilet','',  200,      'g',      24,   1.8,     5.5,   0,      23,    2,       110     );
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, GEWICHT, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1022, 107, 'reis',              '',  200,      'g',      79,   0.4,     1.6,   77,     7,     0.6,     350     );
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, GEWICHT, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1023, 107, 'Sojasoße',          '',  100,      'g',      108,  1.0,     1.5,   6,      9,     0.1,     60      );
+
+
+
+
+
+
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, GEWICHT, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1040, 102, 'Kartoffeln',          '',  200,      'g',      200,  1.3,     0.2,   17,     2,     0.1,     77      );
+INSERT INTO ZUTAT (ZUTATNR, LIEFNR, BEZEICHNUNG, BESCHREIBUNG, GEWICHT, EINHEIT, BESTAND, NETTOPREIS, CO2, KOHLENHYDRATE, PROTEIN, FETT, KALORIEN) VALUES (1041, 102, 'Paprika',             '',  200,      'g',      40,   0.60,    0.1,   6,      1,     0.3,     30      );
+
+
+
 
 -- TODO: mengen angaben  BRAUCHT MAN DIE ÜBERHAUPT?
 INSERT INTO REZEPT_ZUTAT (REZEPTNR, ZUTATNR, MENGE, EINHEIT) VALUES (1, 1015, 75,       'g'); -- lasagne platten
@@ -110,6 +136,13 @@ INSERT INTO REZEPT_ZUTAT (REZEPTNR, ZUTATNR, MENGE, EINHEIT) VALUES (1, 7043, 31
 INSERT INTO REZEPT_ZUTAT (REZEPTNR, ZUTATNR, MENGE, EINHEIT) VALUES (1, 1017, 50,       'ml'); -- sahne
 INSERT INTO REZEPT_ZUTAT (REZEPTNR, ZUTATNR, MENGE, EINHEIT) VALUES (1, 1018, 18.75,    'g'); -- parmesan
 INSERT INTO REZEPT_ZUTAT (REZEPTNR, ZUTATNR, MENGE, EINHEIT) VALUES (1, 1019, 100,      'g'); -- zitrone
+
+INSERT INTO REZEPT_ZUTAT (REZEPTNR, ZUTATNR, MENGE, EINHEIT) VALUES (2, 1040, 250,      'g'); -- kartoffel
+INSERT INTO REZEPT_ZUTAT (REZEPTNR, ZUTATNR, MENGE, EINHEIT) VALUES (2, 1001, 75,       'g'); -- zuccini
+INSERT INTO REZEPT_ZUTAT (REZEPTNR, ZUTATNR, MENGE, EINHEIT) VALUES (2, 1041, 75,       'g'); -- paprika
+INSERT INTO REZEPT_ZUTAT (REZEPTNR, ZUTATNR, MENGE, EINHEIT) VALUES (2, 1002, 50,       'g'); -- zwiebel
+
+
 
 
 INSERT INTO ALERGEN (ALERGENNR, BEZEICHNUNG, BESCHREIBUNG) VALUES (1,  'Laktose', 'Keine Milch ertragen');
@@ -203,6 +236,8 @@ INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (9001,
 INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1013, 2); -- Spinat
 INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1015, 2); -- Lasagne Nudeln
 INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1016, 2); -- Mehl
+INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1040, 2); -- Kartoffel
+INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1041, 2); -- paprika
 
 -- Vegetarisch (ERNAEHRUNGSKATNR = 3) - Includes all vegan options
 INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (3001, 3); -- Vollmilch. 3.5%
@@ -234,6 +269,8 @@ INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1013,
 INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1014, 6); -- Lachs
 INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1017, 6); -- Sahne
 INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1019, 6); -- Zitrone
+INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1040, 6); -- kartoffel
+INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1041, 6); -- paprika
 
 
 -- Low Carb (ERNAEHRUNGSKATNR = 7) - Based on a subjective assessment
@@ -259,6 +296,8 @@ INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (2001,
 INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (6408, 8); -- Couscous
 INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1015, 8); -- Lasagne Nudeln
 INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1016, 8); -- Mehl
+INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1040, 8); -- kartoffel
+INSERT INTO ZUTAT_ERNAEHRUNGSKATEGORIE (ZUTATNR, ERNAEHRUNGSKATNR) VALUES (1041, 8); -- paprika
 
 
 
