@@ -1,15 +1,60 @@
 package org.example.gymbrobox.Service;
 
+import org.example.gymbrobox.database.RecipeRepo;
 import org.example.gymbrobox.model.*;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class RecipeService {
 
-    
+    private final RecipeRepo recipeRepo;
+
+    public RecipeService(RecipeRepo recipeRepo) {
+        this.recipeRepo = recipeRepo;
+    }
+
+
+    public Rezept getRezepte(Map<String, String> queryFilter) {
+        Map<String, Object> result = buildSqlRezeptString(queryFilter);
+
+        return recipeRepo.getFilteredRezeptList((String) result.get("sql"), (MapSqlParameterSource) result.get("params"));
+    }
+
+
+    private Map<String, Object> buildSqlRezeptString(Map<String, String> queryFilter) {
+        MapSqlParameterSource params = new MapSqlParameterSource();
+        Map<String, Object> result = new HashMap<>();
+
+        String sql = "SELECT r.*, z.BEZEICHNUNG, rz.MENGE, rz.EINHEIT FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR WHERE r.REZEPTNR = (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR HAVING SUM((z.CO2 / 1000.0) * rz.MENGE) < 1.7);";
+
+
+        result.put("sql", sql);
+        result.put("params", params);
+
+
+        return result;
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public Recipe createRecipe () {
 
         List<Ingredients> ingredients = new ArrayList<>();

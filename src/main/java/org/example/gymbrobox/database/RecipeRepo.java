@@ -1,7 +1,9 @@
 package org.example.gymbrobox.database;
 
 import org.example.gymbrobox.database.rowMapper.WholeRecipeRowMapper;
+import org.example.gymbrobox.database.rowMapper.WholeRezeptRowMapper;
 import org.example.gymbrobox.model.Recipe;
+import org.example.gymbrobox.model.Rezept;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -33,6 +35,21 @@ public class RecipeRepo {
 //        recipe.setIngredients(ingredients);
 
         return recipe;
+    }
+
+
+    public Rezept getFilteredRezeptList (String sql, MapSqlParameterSource params) {
+        //List<Rezept> rezeptList = new ArrayList<>();
+
+        Rezept rezeptList = template.query(
+                sql,
+                params,
+                new WholeRezeptRowMapper()
+        );
+
+
+
+        return rezeptList;
     }
 
 }

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import org.example.gymbrobox.Service.RecipeService;
 import org.example.gymbrobox.model.Recipe;
+import org.example.gymbrobox.model.Rezept;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,14 +32,15 @@ public class RecipeController {
     @Parameters({
             @Parameter(name = "ernährungsart", description = "frutarisch, vegan, vegetarian, mischKost ", example = "vegan"),
             @Parameter(name = "kohlenhydrate", description = "low, high", example = "low"),
-            @Parameter(name = "kohlenhydrateLimit", description = "int, as limit for carbs per recipe", example = "500"),
-            @Parameter(name = "ingredientLimit", description = "int, as limit for ingredients per recipe", example = "500"),
+            @Parameter(name = "kalorien", description = "low, high", example = "low"),
+            @Parameter(name = "fett", description = "low, high", example = "low"),
             @Parameter(name = "protein", description = "low, high", example = "high"),
-            @Parameter(name = "amount", description = "int, as number of recipes", example = "1")
+            @Parameter(name = "anzahlRezepte", description = "int, as number of recipes", example = "1"),
+            @Parameter(name = "anzahlZutaten", description = "int, as number of ingredients", example = "1")
     })
     @GetMapping("/recipe/filter")
     @ResponseBody
-    public List<Recipe> getFilteredRecipes(
+    public List<Rezept> getFilteredRecipes(
             @RequestParam(required = false) Map<String, String> queryParams
     ) {
 
@@ -50,10 +52,12 @@ public class RecipeController {
 
 
         //TODO: do the thing (Service, Repo)
-        List<Recipe> recipes = new ArrayList<>();
-        recipes.add(recipeService.createRecipe());
-        recipes.add(recipeService.createRecipe());
-        recipes.add(recipeService.createRecipe());
+        Rezept rezept = recipeService.getRezepte(queryParams);
+        List<Rezept> recipes = new ArrayList<>();
+        recipes.add(rezept);
+//        recipes.add(recipeService.createRecipe());
+//        recipes.add(recipeService.createRecipe());
+//        recipes.add(recipeService.createRecipe());
 
 
         return recipes;
