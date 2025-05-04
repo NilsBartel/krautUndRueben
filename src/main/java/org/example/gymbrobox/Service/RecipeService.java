@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class RecipeService {
@@ -21,7 +22,26 @@ public class RecipeService {
     public List<Rezept> getRezepte(Map<String, String> queryFilter) {
         Map<String, Object> result = buildSqlRezeptString(queryFilter);
 
-        return recipeRepo.getFilteredRezeptList((String) result.get("sql"), (MapSqlParameterSource) result.get("params"));
+        List<Rezept> rezepte = recipeRepo.getFilteredRezeptList((String) result.get("sql"), (MapSqlParameterSource) result.get("params"));
+
+        if (queryFilter.containsKey("amount")) {
+            if (rezepte.size() < Integer.parseInt(queryFilter.get("amount"))) {
+                return Collections.emptyList();
+            }
+            return chooseRandomRezepte(Integer.parseInt(queryFilter.get("amount")), rezepte);
+        }
+
+        return rezepte;
+    }
+
+    private List<Rezept> chooseRandomRezepte(int amount, List<Rezept> rezepte) {
+        List<Rezept> newRezeptList;
+        //TODO: cheated
+
+        newRezeptList = rezepte.stream().limit(amount).collect(Collectors.toList());
+
+
+        return newRezeptList;
     }
 
 

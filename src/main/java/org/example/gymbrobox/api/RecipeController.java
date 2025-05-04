@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import org.example.gymbrobox.Service.RecipeService;
 import org.example.gymbrobox.model.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
@@ -34,9 +36,11 @@ public class RecipeController {
 
         //TODO: if query successful do add to bestellung
 
-
-        return recipeService.getRezepte(requestBody.toMap());
-
+        List<Rezept> rezepte = recipeService.getRezepte(requestBody.toMap());
+        if (rezepte.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not enough recipes");
+        }
+        return rezepte;
     }
 
 
