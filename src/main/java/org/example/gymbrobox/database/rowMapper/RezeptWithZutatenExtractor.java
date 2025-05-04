@@ -22,7 +22,6 @@ public class RezeptWithZutatenExtractor implements ResultSetExtractor<List<Rezep
             Rezept rezept = rezeptMap.get(rezeptId);
             if (rezept == null) {
                 rezept = new Rezept();
-                //rezept.setId(rezeptId);
                 rezept.setName(rs.getString("NAME"));
                 rezept.setBeschreibung(rs.getString("BESCHREIBUNG"));
                 rezept.setZubereitung(rs.getString("VORGEHEN"));
