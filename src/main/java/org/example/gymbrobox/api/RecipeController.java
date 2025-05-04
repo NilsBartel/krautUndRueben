@@ -2,6 +2,11 @@ package org.example.gymbrobox.api;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.example.gymbrobox.Service.RecipeService;
 import org.example.gymbrobox.model.*;
 import org.springframework.http.HttpStatus;
@@ -20,7 +25,16 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "List of Rezepte",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = Rezept.class)))),
+            @ApiResponse(responseCode = "404", description = "Not enough recipes found",
+                    content = @Content)
+    })
     @PostMapping("/recipe/filter")
     @ResponseBody
     public List<Rezept> getFilteredRecipes(
