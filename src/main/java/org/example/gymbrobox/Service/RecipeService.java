@@ -18,7 +18,7 @@ public class RecipeService {
     }
 
 
-    public Rezept getRezepte(Map<String, String> queryFilter) {
+    public List<Rezept> getRezepte(Map<String, String> queryFilter) {
         Map<String, Object> result = buildSqlRezeptString(queryFilter);
 
         return recipeRepo.getFilteredRezeptList((String) result.get("sql"), (MapSqlParameterSource) result.get("params"));

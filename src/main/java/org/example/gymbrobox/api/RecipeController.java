@@ -52,15 +52,15 @@ public class RecipeController {
 
 
         //TODO: do the thing (Service, Repo)
-        Rezept rezept = recipeService.getRezepte(queryParams);
-        List<Rezept> recipes = new ArrayList<>();
-        recipes.add(rezept);
+        List<Rezept> rezept = recipeService.getRezepte(queryParams);
+//        List<Rezept> recipes = new ArrayList<>();
+//        recipes.add(rezept);
 //        recipes.add(recipeService.createRecipe());
 //        recipes.add(recipeService.createRecipe());
 //        recipes.add(recipeService.createRecipe());
 
 
-        return recipes;
+        return rezept;
 
     }
 

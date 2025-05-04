@@ -20,6 +20,7 @@ public class WholeRezeptRowMapper implements ResultSetExtractor<Rezept> {
     public Rezept extractData(ResultSet resultSet) throws SQLException {
         Rezept rezept = null;
         List<Zutat> zutaten = new ArrayList<>();
+
         while (resultSet.next()) {
             if (rezept == null) {
                 rezept = rezeptRowMapper.mapRow(resultSet, resultSet.getRow());

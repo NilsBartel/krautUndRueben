@@ -1,12 +1,15 @@
 package org.example.gymbrobox.database;
 
+import org.example.gymbrobox.database.rowMapper.RezeptWithZutatenExtractor;
 import org.example.gymbrobox.database.rowMapper.WholeRecipeRowMapper;
-import org.example.gymbrobox.database.rowMapper.WholeRezeptRowMapper;
 import org.example.gymbrobox.model.Recipe;
 import org.example.gymbrobox.model.Rezept;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public class RecipeRepo {
@@ -38,17 +41,18 @@ public class RecipeRepo {
     }
 
 
-    public Rezept getFilteredRezeptList (String sql, MapSqlParameterSource params) {
-        //List<Rezept> rezeptList = new ArrayList<>();
+    public List<Rezept> getFilteredRezeptList (String sql, MapSqlParameterSource params) {
+        List<Rezept> rezeptList = new ArrayList<>();
 
         //String sql1 = "SELECT r.*, z.BEZEICHNUNG, rz.MENGE, rz.EINHEIT FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR WHERE r.REZEPTNR = (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR HAVING SUM((z.KOHLENHYDRATE / 100.0) * rz.MENGE) < :kohlenhydrateLimit);";
 
         //MapSqlParameterSource params2 = new MapSqlParameterSource("kohlenhydrateLimit", 40);
 
-        Rezept rezeptList = template.query(
+        rezeptList = template.query(
                 sql,
                 params,
-                new WholeRezeptRowMapper()
+                new RezeptWithZutatenExtractor()
+                //new WholeRezeptRowMapper()
         );
 
 
