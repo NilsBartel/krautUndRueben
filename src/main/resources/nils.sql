@@ -615,7 +615,7 @@ FROM REZEPT r
 );
 
 -- ---------------------------------------------------------------------------------------------------------------------
--- Bestellungen:
+-- BESTELLUNGEN:
 
 -- Bestellung ansehen nach bestimmter Bestellnr
 SELECT
@@ -630,38 +630,10 @@ FROM BESTELLUNG b
     JOIN REZEPT r on r.REZEPTNR = br.REZEPTNR
     JOIN REZEPT_ZUTAT rz on br.REZEPTNR = rz.REZEPTNR
     Join ZUTAT z on z.ZUTATNR = rz.ZUTATNR
-WHERE b.BESTELLNR IN (1002);
+WHERE b.BESTELLNR IN (1007); -- edit: bestellnr
 
 
 -- bestellung einfügen
-START TRANSACTION;
-SELECT @next_bestellnr := MAX(BESTELLNR) + 1 FROM BESTELLUNG;
-
-INSERT INTO BESTELLUNG (BESTELLNR, KUNDENNR, BESTELLDATUM)
-VALUES (@next_bestellnr, 2001, CURDATE());
-
--- do this part for every recipe
-INSERT INTO BESTELLUNG_REZEPT (BESTELLNR, REZEPTNR, PORTIONEN)
-SELECT
-    @next_bestellnr,
-    (SELECT r.REZEPTNR),
-    4
-    FROM REZEPT r
-        WHERE NAME = 'lachslasagne';
-
-INSERT INTO BESTELLUNG_REZEPT (BESTELLNR, REZEPTNR, PORTIONEN)
-SELECT
-    @next_bestellnr,
-    (SELECT r.REZEPTNR),
-    3
-    FROM REZEPT r
-        WHERE NAME = 'Kartoffel-Gemüse-Pfanne';
-
-COMMIT;
-
-
-
-
 START TRANSACTION;
 SELECT @next_bestellnr := MAX(BESTELLNR) + 1 FROM BESTELLUNG;
 
@@ -672,7 +644,7 @@ SELECT
     CURDATE()
 FROM KUNDE k
 JOIN LOGIN l on l.USERNAME = k.USERNAME
-WHERE l.USERNAME = 'foede' -- edit username
+WHERE l.USERNAME = 'foede' -- edit: username
 LIMIT 1;
 
 -- do this part for every recipe
@@ -680,9 +652,9 @@ INSERT INTO BESTELLUNG_REZEPT (BESTELLNR, REZEPTNR, PORTIONEN)
 SELECT
     @next_bestellnr,
     (SELECT r.REZEPTNR),
-    4
+    4 -- edit: portionen
     FROM REZEPT r
-        WHERE NAME = 'lachslasagne';
+        WHERE NAME = 'lachslasagne'; -- edit: rezept name
 
 INSERT INTO BESTELLUNG_REZEPT (BESTELLNR, REZEPTNR, PORTIONEN)
 SELECT
@@ -695,14 +667,6 @@ SELECT
 COMMIT;
 
 
-
-
-SELECT
-    l.USERNAME,
-    CURDATE()
-FROM LOGIN l
-WHERE l.USERNAME = 'wellensteyn' -- edit username
-LIMIT 1;
 
 
 
@@ -719,6 +683,8 @@ select *
 from BESTELLUNG;
 
 
+-- ---------------------------------------------------------------------------------------------------------------------
+-- Account Auskunft nach DSGVO:
 
 
 
@@ -727,6 +693,64 @@ from BESTELLUNG;
 
 
 
+
+
+
+-- ---------------------------------------------------------------------------------------------------------------------
+-- Account löschen:
+
+-- alles in LOGIN, ABO, Username(in KUNDE)
+
+-- gucken ob aufbewahrungsplicht (bestellung inerhalb der letzten 10 jahre
+    -- wenn NEIN: alles in KUNDE und ADRESSE(wenn niemand anderes die addresse benutz)
+        -- daten archivieren???
+
+    -- wenn JA:
+        -- anonymisieren: KUNDE: EMAIL, TELEFON, GEBURTSDATUM
+
+
+
+
+START TRANSACTION;
+
+DELETE FROM LOGIN WHERE USERNAME = 'wellensteyn';
+
+-- Setze Kundenbezug in Bestellungen auf NULL oder entferne den Datensatz
+UPDATE BESTELLUNG SET KUNDENNR = NULL WHERE KUNDENNR = 123;
+
+-- Lösche Kundendaten
+DELETE FROM KUNDE WHERE KUNDENNR = 123;
+
+-- Optional: Lösche Adresse, wenn sie nur von diesem Kunden verwendet wurde
+DELETE FROM ADRESSE WHERE ADRESSENR = ... AND NOT EXISTS (
+    SELECT 1 FROM KUNDE WHERE ADRESSNR = ADRESSE.ADRESSENR
+    );
+
+COMMIT;
+
+
+
+
+
+
+
+-- ---------------------------------------------------------------------------------------------------------------------
+-- Custom box:
+
+-- find ingredients:
+
+SELECT
+    z.ZUTATNR,
+    z.BEZEICHNUNG
+FROM ZUTAT z
+WHERE BEZEICHNUNG IN ('ei', '%milch%');
+
+SELECT
+    z.ZUTATNR,
+    z.BEZEICHNUNG
+FROM ZUTAT z
+WHERE LOWER(BEZEICHNUNG) LIKE '%milch%'
+OR LOWER(BEZEICHNUNG) LIKE '%ei%'
 
 
 
