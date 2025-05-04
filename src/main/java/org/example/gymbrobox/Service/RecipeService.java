@@ -57,9 +57,9 @@ public class RecipeService {
                 sql = sql.concat(ernaehrungsString);
                 params.addValue("ernährungsart", "fleisch essend");
 
-            } else if (Objects.equals(queryFilter.get("ernährungsart"), "fruitarisch")) {
+            } else if (Objects.equals(queryFilter.get("ernährungsart"), "frutarisch")) {
                 sql = sql.concat(ernaehrungsString);
-                params.addValue("ernährungsart", "fruitarisch");
+                params.addValue("ernährungsart", "frutarisch");
 
             }
 
@@ -71,7 +71,8 @@ public class RecipeService {
 
 
 
-        sql = sql.concat(" AND r.REZEPTNR IN (SELECT REZEPTNR FROM (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR ");
+        //sql = sql.concat(" AND r.REZEPTNR IN (SELECT REZEPTNR FROM (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR ");
+        sql = sql.concat(" AND r.REZEPTNR IN (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR ");
 
 
 
@@ -176,17 +177,17 @@ public class RecipeService {
             addedFilter = true;
         }
 
-        if (queryFilter.containsKey("amount")) {
-            int amount = Integer.parseInt(queryFilter.get("amount"));
-            sql = sql.concat(" LIMIT :amount ");        // TODO test this one out more
-            params.addValue("amount", amount);
-        }
+//        if (queryFilter.containsKey("amount")) {
+//            int amount = Integer.parseInt(queryFilter.get("amount"));
+//            sql = sql.concat(" LIMIT :amount ");        // TODO test this one out more
+//            params.addValue("amount", amount);
+//        }
 
-        if (addedFilter) {
-            sql = sql.concat(") AS LIMIT_REZEPTE)");
-        }
+//        if (addedFilter) {
+//            sql = sql.concat(") AS LIMIT_REZEPTE)");
+//        }
 
-        sql = sql.concat(";");
+        sql = sql.concat(");");
 
 
 

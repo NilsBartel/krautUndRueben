@@ -618,7 +618,7 @@ WHERE NOT EXISTS (
             WHERE e.PRIORITAET >= (
                 SELECT e2.PRIORITAET
                 FROM ERNAEHRUNGSKATEGORIE e2
-                WHERE e2.BEZEICHNUNG = 'vegan' -- the one to edit
+                WHERE e2.BEZEICHNUNG = 'frutarisch' -- the one to edit
             ) AND e.TYP = 'ernährungsart'
         )
     )
@@ -887,5 +887,10 @@ WHERE NOT EXISTS (
     GROUP BY r.REZEPTNR
     HAVING COUNT(DISTINCT rz.ZUTATNR) < 12
 ) LIMIT 10;
+
+
+
+SELECT r.*, z.BEZEICHNUNG, rz.MENGE, rz.EINHEIT FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR  AND r.REZEPTNR IN (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR  HAVING COUNT(DISTINCT rz.ZUTATNR) < :ingredientLimit);
+
 
 
