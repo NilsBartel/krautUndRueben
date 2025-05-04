@@ -1,3 +1,4 @@
 name:                           nr:         co2:        kohlenhydrate:      protein:        fett:       kalorien
 Lachslasagen                    1           1.6         24                  45              47.7        746
 kartoffel-gemüse-pfanne         2           0.08        50.9                7.5             0.75        243
+Fruchtiger Quinoasalat          3           0.95        210                 34              34.1        1285

@@ -164,7 +164,7 @@ WHERE r.REZEPTNR IN (
 -- co2 ausstoß per kg
 
 
--- TODO: trying to get co2 bilanz of a recipe
+-- TODO: get DATA for recipe
 -- co2 ausstoß per kg
 SELECT
     r.REZEPTNR,
@@ -184,7 +184,40 @@ SELECT
 FROM REZEPT r
          JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
          JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
-WHERE r.REZEPTNR = 1  -- <- change REZEPTNR
+WHERE r.REZEPTNR = 3  -- <- change REZEPTNR
+GROUP BY r.REZEPTNR, r.NAME;
+
+-- protein of a recipe
+SELECT
+    r.REZEPTNR,
+    r.NAME,
+    SUM((z.PROTEIN / 100.0) * rz.MENGE) AS GESAMT_KOHLENHYDRATE
+FROM REZEPT r
+         JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
+         JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
+WHERE r.REZEPTNR = 3  -- <- change REZEPTNR
+GROUP BY r.REZEPTNR, r.NAME;
+
+-- fett of a recipe
+SELECT
+    r.REZEPTNR,
+    r.NAME,
+    SUM((z.FETT / 100.0) * rz.MENGE) AS GESAMT_KOHLENHYDRATE
+FROM REZEPT r
+         JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
+         JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
+WHERE r.REZEPTNR = 3  -- <- change REZEPTNR
+GROUP BY r.REZEPTNR, r.NAME;
+
+-- kalorien of a recipe
+SELECT
+    r.REZEPTNR,
+    r.NAME,
+    SUM((z.KALORIEN / 100.0) * rz.MENGE) AS GESAMT_KOHLENHYDRATE
+FROM REZEPT r
+         JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
+         JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
+WHERE r.REZEPTNR = 3  -- <- change REZEPTNR
 GROUP BY r.REZEPTNR, r.NAME;
 
 
@@ -428,7 +461,7 @@ WHERE NOT EXISTS (
             WHERE e.PRIORITAET >= (
                 SELECT e2.PRIORITAET
                 FROM ERNAEHRUNGSKATEGORIE e2
-                WHERE e2.BEZEICHNUNG = 'fleisch essend' -- the one to edit
+                WHERE e2.BEZEICHNUNG = 'frutarisch' -- the one to edit
             ) AND e.TYP = 'ernährungsart'
         )
     )
@@ -528,7 +561,33 @@ WHERE NOT EXISTS (
                 WHERE e.PRIORITAET >= (
                     SELECT e2.PRIORITAET
                     FROM ERNAEHRUNGSKATEGORIE e2
-                    WHERE e2.BEZEICHNUNG = 'vegetarisch' -- the one to edit
+                    WHERE e2.BEZEICHNUNG = 'frutarisch' -- the one to edit
+                ) AND e.TYP = 'ernährungsart'
+            )
+        )
+);
+-- together with all ingredients
+SELECT
+    r.*,
+    z.BEZEICHNUNG,
+    rz.MENGE,
+    rz.EINHEIT
+FROM REZEPT r
+         JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
+         JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM REZEPT_ZUTAT rz
+    WHERE rz.REZEPTNR = r.REZEPTNR
+        AND rz.ZUTATNR NOT IN (
+            select z.ZUTATNR from ZUTAT z
+                join ZUTAT_ERNAEHRUNGSKATEGORIE ze on z.ZUTATNR = ze.ZUTATNR
+            where ze.ERNAEHRUNGSKATNR in (
+                SELECT e.ERNAEHRUNGSKATNR FROM ERNAEHRUNGSKATEGORIE e
+                WHERE e.PRIORITAET >= (
+                    SELECT e2.PRIORITAET
+                    FROM ERNAEHRUNGSKATEGORIE e2
+                    WHERE e2.BEZEICHNUNG = 'fleisch essend' -- the one to edit
                 ) AND e.TYP = 'ernährungsart'
             )
         )
@@ -538,6 +597,7 @@ WHERE NOT EXISTS (
 -- trying to build the query together
 -- TODO: !!!!!!!!! TEST THIS ONE WITH MORE RECIPES. !!!!!!!!!!!
 
+-- TODO: the one im using
 SELECT
     r.*,
     z.BEZEICHNUNG,
@@ -563,16 +623,14 @@ WHERE NOT EXISTS (
         )
     )
 ) AND r.REZEPTNR IN (
-    SELECT REZEPTNR FROM ( -- workaround for: This version of MySQL doesn't yet support 'LIMIT & IN/ALL/ANY/SOME subquery'
-                             SELECT
-                                 r.REZEPTNR
-                             FROM REZEPT r
-                                      JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
-                                      JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
-                             GROUP BY r.REZEPTNR
-                             HAVING COUNT(DISTINCT rz.ZUTATNR) < 12
-                             LIMIT 2
-                         ) AS LIMIT_REZEPTE
+    SELECT
+     r.REZEPTNR
+    FROM REZEPT r
+          JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
+          JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
+    GROUP BY r.REZEPTNR
+    HAVING COUNT(DISTINCT rz.ZUTATNR) < 12
+
 );
 
 
@@ -756,6 +814,78 @@ OR LOWER(BEZEICHNUNG) LIKE '%ei%'
 
 
 
+-- ---------------------------------------------------------------------------------------------------------------------
+SELECT
+    r.*,
+    z.BEZEICHNUNG,
+    rz.MENGE,
+    rz.EINHEIT
+FROM REZEPT r
+         JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
+         JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM REZEPT_ZUTAT rz
+    WHERE rz.REZEPTNR = r.REZEPTNR
+      AND rz.ZUTATNR NOT IN (
+        select z.ZUTATNR from ZUTAT z
+                                  join ZUTAT_ERNAEHRUNGSKATEGORIE ze on z.ZUTATNR = ze.ZUTATNR
+        where ze.ERNAEHRUNGSKATNR in (
+            SELECT e.ERNAEHRUNGSKATNR FROM ERNAEHRUNGSKATEGORIE e
+            WHERE e.PRIORITAET >= (
+                SELECT e2.PRIORITAET
+                FROM ERNAEHRUNGSKATEGORIE e2
+                WHERE e2.BEZEICHNUNG = 'frutarisch' -- the one to edit
+            ) AND e.TYP = 'ernährungsart'
+        )
+    )
+) AND r.REZEPTNR IN (
+    SELECT REZEPTNR FROM ( -- workaround for: This version of MySQL doesn't yet support 'LIMIT & IN/ALL/ANY/SOME subquery'
+                             SELECT
+                                 r.REZEPTNR
+                             FROM REZEPT r
+                                      JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
+                                      JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
+                             GROUP BY r.REZEPTNR
+                             HAVING COUNT(DISTINCT rz.ZUTATNR) < 12
+                             LIMIT 4
+                         ) AS LIMIT_REZEPTE
+)
 
+
+
+SELECT
+    r.*,
+    z.BEZEICHNUNG,
+    rz.MENGE,
+    rz.EINHEIT
+FROM REZEPT r
+         JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
+         JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM REZEPT_ZUTAT rz
+    WHERE rz.REZEPTNR = r.REZEPTNR
+      AND rz.ZUTATNR NOT IN (
+        select z.ZUTATNR from ZUTAT z
+                                  join ZUTAT_ERNAEHRUNGSKATEGORIE ze on z.ZUTATNR = ze.ZUTATNR
+        where ze.ERNAEHRUNGSKATNR in (
+            SELECT e.ERNAEHRUNGSKATNR FROM ERNAEHRUNGSKATEGORIE e
+            WHERE e.PRIORITAET >= (
+                SELECT e2.PRIORITAET
+                FROM ERNAEHRUNGSKATEGORIE e2
+                WHERE e2.BEZEICHNUNG = 'frutarisch' -- the one to edit
+            ) AND e.TYP = 'ernährungsart'
+        )
+    )
+) AND r.REZEPTNR IN (
+    SELECT
+     r.REZEPTNR
+    FROM REZEPT r
+          JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
+          JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
+    GROUP BY r.REZEPTNR
+    HAVING COUNT(DISTINCT rz.ZUTATNR) < 12
+) LIMIT 10;
 
 

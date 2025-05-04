@@ -66,6 +66,18 @@ INSERT INTO REZEPT (REZEPTNR, NAME, BESCHREIBUNG, VORGEHEN) VALUES (3,
                                                                     'Quinoa kochen, abkühlen lassen. Mit gewürfeltem Obst, Rosinen und klein gehackter Minze mischen. Mit Zitronensaft und Olivenöl abschmecken.'
                                                                    );
 
+INSERT INTO REZEPT (REZEPTNR, NAME, BESCHREIBUNG, VORGEHEN) VALUES (4,
+                                                                    '',
+                                                                    '',
+                                                                    ''
+                                                                   );
+
+INSERT INTO REZEPT (REZEPTNR, NAME, BESCHREIBUNG, VORGEHEN) VALUES (5,
+                                                                    '',
+                                                                    '',
+                                                                    ''
+                                                                   );
+
 INSERT INTO BESTELLUNG_REZEPT (BESTELLNR, REZEPTNR, PORTIONEN) VALUES (1001, 1, 4);
 INSERT INTO BESTELLUNG_REZEPT (BESTELLNR, REZEPTNR, PORTIONEN) VALUES (1001, 2, 1);
 
