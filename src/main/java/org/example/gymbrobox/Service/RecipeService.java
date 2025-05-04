@@ -28,9 +28,13 @@ public class RecipeService {
     private Map<String, Object> buildSqlRezeptString(Map<String, String> queryFilter) {
         MapSqlParameterSource params = new MapSqlParameterSource();
         Map<String, Object> result = new HashMap<>();
+        boolean addedFilter = false;
 
-        // String sql = "SELECT r.*, z.BEZEICHNUNG, rz.MENGE, rz.EINHEIT FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR WHERE r.REZEPTNR = (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR HAVING SUM((z.CO2 / 1000.0) * rz.MENGE) < 1.7);";
-        String sql = "SELECT r.*, z.BEZEICHNUNG, rz.MENGE, rz.EINHEIT FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR WHERE r.REZEPTNR IN (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR HAVING ";
+        // old one
+        //String sql = "SELECT r.*, z.BEZEICHNUNG, rz.MENGE, rz.EINHEIT FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR WHERE r.REZEPTNR IN (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR HAVING ";
+        // has the subquery for LIMIT and IN
+        String sql = "SELECT r.*, z.BEZEICHNUNG, rz.MENGE, rz.EINHEIT FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR WHERE r.REZEPTNR IN (SELECT REZEPTNR FROM (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR ";
+
 
 
         // TODO: check for no filters if it works? can i remove the whole subquery???
@@ -44,48 +48,102 @@ public class RecipeService {
 
         if (queryFilter.containsKey("kohlenhydrate")) {
             if (Objects.equals(queryFilter.get("kohlenhydrate"), "low")) {
-                sql = sql.concat("SUM((z.KOHLENHYDRATE / 100.0) * rz.MENGE) < :kohlenhydrateLimit"); // TODO add AND
+                if (addedFilter) {
+                    sql = sql.concat(" AND ");
+                } else {
+                    sql = sql.concat(" HAVING ");
+                }
+                sql = sql.concat("SUM((z.KOHLENHYDRATE / 100.0) * rz.MENGE) < :kohlenhydrateLimit");
                 params.addValue("kohlenhydrateLimit", NutritionLimit.KOHELENHYDRATE_LOW_LIMIT.getValue());
+                addedFilter = true;
             } else if (Objects.equals(queryFilter.get("kohlenhydrate"), "high")) {
-                sql = sql.concat("SUM((z.KOHLENHYDRATE / 100.0) * rz.MENGE) > :kohlenhydrateLimit"); // TODO add AND
+                if (addedFilter) {
+                    sql = sql.concat(" AND ");
+                } else {
+                    sql = sql.concat(" HAVING ");
+                }
+                sql = sql.concat("SUM((z.KOHLENHYDRATE / 100.0) * rz.MENGE) > :kohlenhydrateLimit");
                 params.addValue("kohlenhydrateLimit", NutritionLimit.KOHELENHYDRATE_LOW_LIMIT.getValue());
+                addedFilter = true;
             }
         }
 
         if (queryFilter.containsKey("protein")) {
             if (Objects.equals(queryFilter.get("protein"), "low")) {
-                sql = sql.concat("SUM((z.PROTEIN / 100.0) * rz.MENGE) < :proteinLimit"); // TODO add AND
+                if (addedFilter) {
+                    sql = sql.concat(" AND ");
+                } else {
+                    sql = sql.concat(" HAVING ");
+                }
+                sql = sql.concat("SUM((z.PROTEIN / 100.0) * rz.MENGE) < :proteinLimit");
                 params.addValue("proteinLimit", NutritionLimit.PROTEIN_LOW_LIMIT.getValue());
+                addedFilter = true;
             } else if (Objects.equals(queryFilter.get("protein"), "high")) {
-                sql = sql.concat("SUM((z.PROTEIN / 100.0) * rz.MENGE) > :proteinLimit"); // TODO add AND
+                if (addedFilter) {
+                    sql = sql.concat(" AND ");
+                } else {
+                    sql = sql.concat(" HAVING ");
+                }
+                sql = sql.concat("SUM((z.PROTEIN / 100.0) * rz.MENGE) > :proteinLimit");
                 params.addValue("proteinLimit", NutritionLimit.PROTEIN_LOW_LIMIT.getValue());
+                addedFilter = true;
             }
         }
 
         if (queryFilter.containsKey("fat")) {
             if (Objects.equals(queryFilter.get("fat"), "low")) {
-                sql = sql.concat("SUM((z.FETT / 100.0) * rz.MENGE) < :fatLimit"); // TODO add AND
+                if (addedFilter) {
+                    sql = sql.concat(" AND ");
+                } else {
+                    sql = sql.concat(" HAVING ");
+                }
+                sql = sql.concat("SUM((z.FETT / 100.0) * rz.MENGE) < :fatLimit");
                 params.addValue("fatLimit", NutritionLimit.FETT_LOW_LIMIT.getValue());
+                addedFilter = true;
             } else if (Objects.equals(queryFilter.get("fat"), "high")) {
-                sql = sql.concat("SUM((z.FETT / 100.0) * rz.MENGE) > :fatLimit"); // TODO add AND
+                if (addedFilter) {
+                    sql = sql.concat(" AND ");
+                } else {
+                    sql = sql.concat(" HAVING ");
+                }
+                sql = sql.concat("SUM((z.FETT / 100.0) * rz.MENGE) > :fatLimit");
                 params.addValue("fatLimit", NutritionLimit.FETT_LOW_LIMIT.getValue());
+                addedFilter = true;
             }
         }
 
         if (queryFilter.containsKey("co2")) {
             if (Objects.equals(queryFilter.get("co2"), "low")) {
-                sql = sql.concat("SUM((z.CO2 / 1000.0) * rz.MENGE) < :co2Limit"); // TODO add AND
+                if (addedFilter) {
+                    sql = sql.concat(" AND ");
+                } else {
+                    sql = sql.concat(" HAVING ");
+                }
+                sql = sql.concat("SUM((z.CO2 / 1000.0) * rz.MENGE) < :co2Limit");
                 params.addValue("co2Limit", NutritionLimit.CO2_LOW_LIMIT.getValue());
+                addedFilter = true;
             } else if (Objects.equals(queryFilter.get("co2"), "high")) {
-                sql = sql.concat("SUM((z.CO2 / 1000.0) * rz.MENGE) > :co2Limit"); // TODO add AND
+                if (addedFilter) {
+                    sql = sql.concat(" AND ");
+                } else {
+                    sql = sql.concat(" HAVING ");
+                }
+                sql = sql.concat("SUM((z.CO2 / 1000.0) * rz.MENGE) > :co2Limit");
                 params.addValue("co2Limit", NutritionLimit.CO2_LOW_LIMIT.getValue());
+                addedFilter = true;
             }
         }
 
         if (queryFilter.containsKey("ingredientLimit")) {
+            if (addedFilter) {
+                sql = sql.concat(" AND ");
+            } else {
+                sql = sql.concat(" HAVING ");
+            }
             int limit = Integer.parseInt(queryFilter.get("ingredientLimit"));
-        sql = sql.concat("COUNT(DISTINCT rz.ZUTATNR) < :ingredientLimit");    // TODO add AND
+            sql = sql.concat("COUNT(DISTINCT rz.ZUTATNR) < :ingredientLimit");
             params.addValue("ingredientLimit", limit);
+            addedFilter = true;
         }
 
         if (queryFilter.containsKey("amount")) {
@@ -94,7 +152,7 @@ public class RecipeService {
             params.addValue("amount", amount);
         }
 
-        sql = sql.concat(");");
+        sql = sql.concat(") AS LIMIT_REZEPTE);");
 
 
         result.put("sql", sql);
