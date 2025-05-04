@@ -15,74 +15,13 @@
           "name": "filter Recipe",
           "seq": 2,
           "request": {
-            "url": "http://localhost:8080/recipe/filter?amount=2&co2=low&ingredientLimit=12&ernährungsart=vegan",
+            "url": "http://localhost:8080/recipe/filter",
             "method": "POST",
             "headers": [],
-            "params": [
-              {
-                "name": "amount",
-                "value": "2",
-                "type": "query",
-                "enabled": true
-              },
-              {
-                "name": "co2",
-                "value": "low",
-                "type": "query",
-                "enabled": true
-              },
-              {
-                "name": "ingredientLimit",
-                "value": "12",
-                "type": "query",
-                "enabled": true
-              },
-              {
-                "name": "ernährungsart",
-                "value": "vegan",
-                "type": "query",
-                "enabled": true
-              },
-              {
-                "name": "kohlenhydrate",
-                "value": "high",
-                "type": "query",
-                "enabled": false
-              },
-              {
-                "name": "protein",
-                "value": "low",
-                "type": "query",
-                "enabled": false
-              },
-              {
-                "name": "fat",
-                "value": "high",
-                "type": "query",
-                "enabled": false
-              },
-              {
-                "name": "ernährungsart",
-                "value": "vegetarisch",
-                "type": "query",
-                "enabled": false
-              },
-              {
-                "name": "ernährungsart",
-                "value": "mischKost",
-                "type": "query",
-                "enabled": false
-              },
-              {
-                "name": "ernährungsart",
-                "value": "fruitarisch",
-                "type": "query",
-                "enabled": false
-              }
-            ],
+            "params": [],
             "body": {
               "mode": "json",
-              "json": "{\n  \"ernährungsart\":\"mischKost\",\n  // fruitarisch, vegan, vegetarisch, mischKost\n  \"kohlenhydrate\":\"all\",\n  // low, high, all\n  \"ingredientLimit\":\"12\",\n  // 1, 5, 10 (any int)\n  \"protein\":\"all\",\n  // low, high, all\n  \"amount\":\"2\",\n  // 1, 5, 10 (any int)\n  \"fat\":\"all\",\n  // low, high, all\n  \"co2\":\"low\"\n  // low, high, all\n}",
+              "json": "{\n  \"ernährungsart\":\"mischKost\",\n  // fruitarisch, vegan, vegetarisch, mischKost\n  \"kohlenhydrate\":\"all\",\n  // low, high, all\n  \"kalorien\":\"all\",\n  // low, high, all\n  \"ingredientLimit\":\"12\",\n  // 1, 5, 10 (any int)\n  \"protein\":\"all\",\n  // low, high, all\n  \"amount\":\"2\",\n  // 1, 5, 10 (any int)\n  \"fat\":\"all\",\n  // low, high, all\n  \"co2\":\"low\"\n  // low, high, all\n}",
               "formUrlEncoded": [],
               "multipartForm": []
             },

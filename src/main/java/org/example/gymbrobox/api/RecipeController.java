@@ -28,15 +28,6 @@ public class RecipeController {
         return recipeService.createRecipe();
     }
 
-    @Parameters({
-            @Parameter(name = "ernährungsart", description = "frutarisch, vegan, vegetarian, mischKost ", example = "vegan"),
-            @Parameter(name = "kohlenhydrate", description = "low, high", example = "low"),
-            @Parameter(name = "kalorien", description = "low, high", example = "low"),
-            @Parameter(name = "fett", description = "low, high", example = "low"),
-            @Parameter(name = "protein", description = "low, high", example = "high"),
-            @Parameter(name = "anzahlRezepte", description = "int, as number of recipes", example = "1"),
-            @Parameter(name = "anzahlZutaten", description = "int, as number of ingredients", example = "1")
-    })
     @PostMapping("/recipe/filter")
     @ResponseBody
     public List<Rezept> getFilteredRecipes(

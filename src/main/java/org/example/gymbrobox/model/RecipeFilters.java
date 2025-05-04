@@ -1,15 +1,35 @@
 package org.example.gymbrobox.model;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class RecipeFilters {
+    @Schema(name = "ernährungsart", description = "frutarisch, vegan, vegetarian, mischKost ", example = "vegan")
     private String ernährungsart;
+
+    @Schema(name = "kohlenhydrate", description = "low, high, all", example = "low")
     private String kohlenhydrate;
+
+    @Schema(name = "kalorien", description = "low, high, all", example = "low")
+    private String kalorien;
+
+    @Schema(name = "ingredientLimit", description = "int, as number of ingredients", example = "12")
     private String ingredientLimit;
+
+    @Schema(name = "protein", description = "low, high, all", example = "high")
     private String protein;
+
+    @Schema(name = "amount", description = "int, as number of recipes", example = "2")
     private String amount;
+
+    @Schema(name = "fat", description = "low, high, all", example = "low")
     private String fat;
+
+    @Schema(name = "co2", description = "low, high, all", example = "low")
     private String co2;
 
 
@@ -72,10 +92,19 @@ public class RecipeFilters {
         this.co2 = co2;
     }
 
+    public String getKalorien() {
+        return kalorien;
+    }
+
+    public void setKalorien(String kalorien) {
+        this.kalorien = kalorien;
+    }
+
     public Map<String, String> toMap() {
         Map<String, String> map = new HashMap<>();
         map.put("ernährungsart", ernährungsart);
         map.put("kohlenhydrate", kohlenhydrate);
+        map.put("kalorien", kalorien);
         map.put("ingredientLimit", ingredientLimit);
         map.put("protein", protein);
         map.put("amount", amount);
