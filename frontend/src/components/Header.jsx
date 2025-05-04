@@ -3,6 +3,7 @@ import "./Header.css"
 import ShoppingCartModal from './ShoppingCartModal';
 import { createPortal } from 'react-dom';
 import { useState, useEffect } from 'react';
+import { hasToken } from '../lib/token';
 
 function Header() {
   const navigate = useNavigate();
@@ -11,7 +12,8 @@ function Header() {
   const [itemCount, setItemCount] = useState(0);
 
   const handleAccountClick = () => {
-    navigate('/account');
+    hasToken() ?
+      navigate('/account') : navigate('/login');
   };
 
   useEffect(() => {
@@ -27,6 +29,7 @@ function Header() {
   function updateCount() {
     setItemCount(JSON.parse(localStorage.getItem("cart")).items.length)
   }
+
 
   return (
     <>
