@@ -33,8 +33,8 @@ public class RecipeService {
         // old one
         //String sql = "SELECT r.*, z.BEZEICHNUNG, rz.MENGE, rz.EINHEIT FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR WHERE r.REZEPTNR IN (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR HAVING ";
         // has the subquery for LIMIT and IN
-        String sql = "SELECT r.*, z.BEZEICHNUNG, rz.MENGE, rz.EINHEIT FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR WHERE r.REZEPTNR IN (SELECT REZEPTNR FROM (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR ";
-
+        //String sql = "SELECT r.*, z.BEZEICHNUNG, rz.MENGE, rz.EINHEIT FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR WHERE r.REZEPTNR IN (SELECT REZEPTNR FROM (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR ";
+        String sql = "SELECT r.*, z.BEZEICHNUNG, rz.MENGE, rz.EINHEIT FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR ";
 
 
         // TODO: check for no filters if it works? can i remove the whole subquery???
@@ -43,8 +43,38 @@ public class RecipeService {
         // TODO put the HAVING part
 
         if (queryFilter.containsKey("ernährungsart")) {
-            sql = sql.concat("AND SUM((z.CO2 / 1000.0) * rz.MENGE) < 1.7"); // TODO need to figure out the sql part !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            String ernaehrungsString = "WHERE NOT EXISTS (SELECT 1 FROM REZEPT_ZUTAT rz WHERE rz.REZEPTNR = r.REZEPTNR AND rz.ZUTATNR NOT IN (select z.ZUTATNR from ZUTAT z join ZUTAT_ERNAEHRUNGSKATEGORIE ze on z.ZUTATNR = ze.ZUTATNR where ze.ERNAEHRUNGSKATNR in (SELECT e.ERNAEHRUNGSKATNR FROM ERNAEHRUNGSKATEGORIE e WHERE e.PRIORITAET >= (SELECT e2.PRIORITAET FROM ERNAEHRUNGSKATEGORIE e2 WHERE e2.BEZEICHNUNG = :ernährungsart) AND e.TYP = 'ernährungsart')))";
+
+            if (Objects.equals(queryFilter.get("ernährungsart"), "vegan")) {
+                sql = sql.concat(ernaehrungsString);
+                params.addValue("ernährungsart", "vegan");
+
+            } else if (Objects.equals(queryFilter.get("ernährungsart"), "vegetarisch")) {
+                sql = sql.concat(ernaehrungsString);
+                params.addValue("ernährungsart", "vegetarisch");
+
+            } else if (Objects.equals(queryFilter.get("ernährungsart"), "mischKost")) {
+                sql = sql.concat(ernaehrungsString);
+                params.addValue("ernährungsart", "fleisch essend");
+
+            } else if (Objects.equals(queryFilter.get("ernährungsart"), "fruitarisch")) {
+                sql = sql.concat(ernaehrungsString);
+                params.addValue("ernährungsart", "fruitarisch");
+
+            }
+
+            // TODO need to figure out the sql part !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         }
+
+
+
+
+
+
+        sql = sql.concat(" AND r.REZEPTNR IN (SELECT REZEPTNR FROM (SELECT r.REZEPTNR FROM REZEPT r JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR GROUP BY r.REZEPTNR ");
+
+
+
 
         if (queryFilter.containsKey("kohlenhydrate")) {
             if (Objects.equals(queryFilter.get("kohlenhydrate"), "low")) {
@@ -152,7 +182,12 @@ public class RecipeService {
             params.addValue("amount", amount);
         }
 
-        sql = sql.concat(") AS LIMIT_REZEPTE);");
+        if (addedFilter) {
+            sql = sql.concat(") AS LIMIT_REZEPTE)");
+        }
+
+        sql = sql.concat(";");
+
 
 
         result.put("sql", sql);

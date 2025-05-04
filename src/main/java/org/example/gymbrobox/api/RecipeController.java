@@ -4,15 +4,14 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import org.example.gymbrobox.Service.RecipeService;
 import org.example.gymbrobox.model.Recipe;
+import org.example.gymbrobox.model.RecipeFilters;
 import org.example.gymbrobox.model.Rezept;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 
 @RestController
 public class RecipeController {
@@ -38,29 +37,36 @@ public class RecipeController {
             @Parameter(name = "anzahlRezepte", description = "int, as number of recipes", example = "1"),
             @Parameter(name = "anzahlZutaten", description = "int, as number of ingredients", example = "1")
     })
-    @GetMapping("/recipe/filter")
+    @PostMapping("/recipe/filter")
     @ResponseBody
     public List<Rezept> getFilteredRecipes(
-            @RequestParam(required = false) Map<String, String> queryParams
+            //@RequestParam(required = false) Map<String, String> queryParams,
+            @RequestBody RecipeFilters requestBody
     ) {
 
 
+//        System.out.println();
+//        for (Map.Entry<String, String> entry : queryParams.entrySet()) {
+//            System.out.println(entry.getKey() + ": " + entry.getValue());
+//        }
+
         System.out.println();
-        for (Map.Entry<String, String> entry : queryParams.entrySet()) {
+        System.out.println("requestbody");
+        for (Map.Entry<String, String> entry : requestBody.toMap().entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
 
 
+
         //TODO: do the thing (Service, Repo)
-        List<Rezept> rezept = recipeService.getRezepte(queryParams);
-//        List<Rezept> recipes = new ArrayList<>();
+        //        List<Rezept> recipes = new ArrayList<>();
 //        recipes.add(rezept);
 //        recipes.add(recipeService.createRecipe());
 //        recipes.add(recipeService.createRecipe());
 //        recipes.add(recipeService.createRecipe());
 
 
-        return rezept;
+        return recipeService.getRezepte(requestBody.toMap());
 
     }
 
