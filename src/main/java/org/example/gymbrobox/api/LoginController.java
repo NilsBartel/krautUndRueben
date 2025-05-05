@@ -39,6 +39,7 @@ public class LoginController {
 
     @RequestMapping(value = "/account/registers", method = RequestMethod.OPTIONS)
     public String options() {
+        System.out.println("OPTIONS");
         return "OPTIONS";
     }
 
@@ -49,6 +50,7 @@ public class LoginController {
     @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     public Map<String, String> register(@RequestBody CombinedUserUserAccount combinedUserUserAccount) {
+        System.out.println("REGISTER");
         User user = combinedUserUserAccount.getUser();
         UserAccountWithSecurity userAccount = combinedUserUserAccount.getUserAccount();
 
