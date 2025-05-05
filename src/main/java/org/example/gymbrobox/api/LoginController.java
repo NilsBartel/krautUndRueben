@@ -72,21 +72,21 @@ public class LoginController {
 
     @PostMapping("/account/resetPassword")
     @CrossOrigin(origins = "http://localhost:3000")
-    public String resetPassword(@RequestBody UserAccountWithSecurity userAccount) {
+    public Map<String, String> resetPassword(@RequestBody UserAccountWithSecurity userAccount) {
         if (!loginService.resetPassword(userAccount)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wrong Security Answer");
         }
 
-        return "success";
+        return Map.of("status", "success");
     }
 
     @PostMapping("/logout")
     @CrossOrigin(origins = "http://localhost:3000")
-    public String logout(@RequestHeader("token") String token) {
+    public Map<String, String> logout(@RequestHeader("token") String token) {
         if (!authenticationTokenService.logout(token)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
         }
 
-        return "success";
+        return Map.of("status", "success");
     }
 }
