@@ -13,6 +13,8 @@ function BoxCreator({ boxData }) {
         zutaten: 1,
     });
     const [recipies, setRecipies] = useState([]);
+    const [showRecipes, setShowRecipes] = useState(false);
+
     const apiPath = "http://localhost:8080"
 
 
@@ -48,9 +50,7 @@ function BoxCreator({ boxData }) {
             .then((response) => {
                 console.log(response);
                 setRecipies(response.recipes);
-
-                // saveToken(response.token);
-                // navigate("/");
+                setShowRecipes(true);
             })
             .catch((response) => {
                 console.log(response);
@@ -140,7 +140,9 @@ function BoxCreator({ boxData }) {
                 <button onClick={handleSubmit}>Bestellung abschicken</button>
 
             </div>
-            <RecipieDisplay hidden={false} boxData={boxData} recipes={[{ name: "deine mom" }, { name: "meine mom" }, { name: "ihre mutter" }]} />
+            <RecipieDisplay hidden={!showRecipes} boxData={boxData} recipes={recipies} />
+
+            {/* <RecipieDisplay hidden={true} boxData={boxData} recipes={[{ name: "deine mom" }, { name: "meine mom" }, { name: "ihre mutter" }]} /> */}
         </div>
 
     );

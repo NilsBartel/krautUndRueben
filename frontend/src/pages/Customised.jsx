@@ -2,11 +2,15 @@ import { useState } from 'react';
 import Header from '../components/Header';
 
 const ingredientsList = [
-    'Banane', 'Zucchini', 'Zwiebel', 'Tomate', 'Schalotte', 'Karotte', 'Kartoffel', 'Rucola', 'Lauch',
-    'Knoblauch', 'Basilikum', 'Süßkartoffel', 'Schnittlauch', 'Apfel', 'Vollmilch. 3.5%',
-    'Mozzarella', 'Butter', 'Ei', 'Wiener Würstchen', 'Tofu-Würstchen', 'Couscous', 'Gemüsebrühe',
-    'Kichererbsen', 'Spinat', 'Lachs', 'Lasagne Nudeln', 'Mehl', 'Sahne', 'Parmesan', 'Zitrone'
+    'Ananas', 'Apfel', 'Avocado', 'Bananen', 'Basilikum', 'Brokkoli', 'Butter', 'Couscous',
+    'Currypaste', 'Erdnussbutter', 'Ei', 'Gemüsebrühe', 'Gurke', 'Hähnchenbrustfilet', 'Ingwer',
+    'Kartoffel', 'Kartoffeln', 'Käse', 'Kichererbsen', 'Knoblauch', 'Kokosmilch', 'Lasagne Nudeln',
+    'Lauch', 'Lachs', 'Limette', 'Mango', 'Mehl', 'Mozzarella', 'Paprika', 'Parmesan', 'Pasta',
+    'Pesto', 'Quinoa', 'Rote Linsen', 'Reis', 'Rosinen', 'Rucola', 'Sahne', 'Schalotte',
+    'Schnittlauch', 'Sojasoße', 'Spinat', 'Süßkartoffel', 'Tofu', 'Tofu-Würstchen', 'Tomate',
+    'Vollmilch. 3.5%', 'Wiener Würstchen', 'Zitrone', 'Zucchini', 'Zwiebel'
 ];
+
 
 function Customized() {
     const [selectedIngredients, setSelectedIngredients] = useState({});
@@ -43,7 +47,7 @@ function Customized() {
         }
 
         console.log("Bestellung:", selected);
-        addToCart();
+        //addToCart();
         fetch(apiPath + "/recipe", {
             method: 'POST',
             headers: {
@@ -56,21 +60,30 @@ function Customized() {
         })
             .then((response) => {
                 return response.json().then(json => {
-                    return response.ok ? json : Promise.reject(json);
+                    if (response.ok) {
+                        return json;
+                    } else {
+                        // Fehlerobjekt mit Status erweitern
+                        return Promise.reject({ status: response.status, error: json.error });
+                    }
                 });
             })
             .then((response) => {
                 console.log(response);
-                addToCart()
-                //setRecipies(response.recipes);
-
+                addToCart();
+                // setRecipies(response.recipes);
                 // saveToken(response.token);
                 // navigate("/");
             })
-            .catch((response) => {
-                console.log(response);
-                alert(response.error)
+            .catch((err) => {
+                console.log(err);
+                if (err.status === 404) {
+                    alert("Diese Box ist nicht verfügbar.");
+                } else {
+                    alert(err.error || "Ein unbekannter Fehler ist aufgetreten.");
+                }
             });
+
 
         function addToCart() {
 

@@ -20,6 +20,8 @@ function Login() {
   const [state, setState] = useState('');
   const [country, setCountry] = useState('');
   const [isResettingPassword, setIsResettingPassword] = useState(false);
+  const [email, setEmail] = useState('');
+
 
 
   const navigate = useNavigate();
@@ -28,12 +30,6 @@ function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isRegistering) {
-      onRegistration(e);
-    } else {
-      onLogin(e);
-
-    }
     if (isResettingPassword) {
       onResetPassword(e);
     } else if (isRegistering) {
@@ -41,7 +37,6 @@ function Login() {
     } else {
       onLogin(e);
     }
-
 
 
     function onLogin(e) {
@@ -95,7 +90,7 @@ function Login() {
           securityQuestion: form.securityAnswer.value,
           firstName: form.name.value,
           lastName: form.nachname.value,
-          email: "replace@me.please",
+          email: form.email.value,
           abo: subscribe,
           street: form.street.value,
           houseNumber: form.houseNumber.value,
@@ -281,6 +276,32 @@ function Login() {
                   required
                 />
               </div>
+
+              <div className="mb-3">
+                <label htmlFor="email" className="form-label">E-Mail</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="password" className="form-label">Passwort</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+
+
 
               <div className="mb-3">
                 <label htmlFor="street" className="form-label">Straße</label>
