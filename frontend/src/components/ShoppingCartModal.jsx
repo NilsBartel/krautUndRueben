@@ -54,7 +54,8 @@ function ShoppingCartModal(props) {
 
     function handleOrder() {
 
-        fetch(apiPath + "/recipe/filter", {
+        //fetch(apiPath + "/recipe/filter", {
+        fetch(apiPath + "/recipe/order", {
             method: 'POST',
             headers: {
                 "token": getToken(),
@@ -94,7 +95,7 @@ function ShoppingCartModal(props) {
                             < div className="cartItemInput" >
 
                                 <h3>{item.name}</h3>
-                                <ul> {item.rezepte.map((rezept, index) => (
+                                <ul> {item.rezepte?.map((rezept, index) => (
                                     <li key={index}>{rezept}</li>))}</ul>
                             </div>
                             <button onClick={() => removeItem(item.key)}>Entfernen</button>
