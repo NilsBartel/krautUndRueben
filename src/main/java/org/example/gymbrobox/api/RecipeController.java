@@ -2,11 +2,15 @@ package org.example.gymbrobox.api;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.xml.bind.SchemaOutputResolver;
+import org.example.gymbrobox.Service.AuthenticationTokenService;
 import org.example.gymbrobox.Service.RecipeService;
 import org.example.gymbrobox.model.*;
 import org.springframework.http.HttpStatus;
@@ -21,8 +25,10 @@ import java.util.Map;
 public class RecipeController {
 
     private final RecipeService recipeService;
-    public RecipeController(RecipeService recipeService) {
+    private final AuthenticationTokenService tokenService;
+    public RecipeController(RecipeService recipeService, AuthenticationTokenService tokenService) {
         this.recipeService = recipeService;
+        this.tokenService = tokenService;
     }
 
     @ApiResponses(value = {
@@ -39,15 +45,19 @@ public class RecipeController {
     @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     public List<Rezept> getFilteredRecipes(
-            @RequestBody RecipeFilters requestBody
-
+            @RequestBody RecipeFilters requestBody,
+            @RequestHeader(value = "token", required = false) String token
     ) {
 
-        System.out.println();
-        System.out.println("requestbody");
-        for (Map.Entry<String, String> entry : requestBody.toMap().entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+        if (!tokenService.authenticate(token)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "token wrong");
         }
+
+//        System.out.println();
+//        System.out.println("requestbody");
+//        for (Map.Entry<String, String> entry : requestBody.toMap().entrySet()) {
+//            System.out.println(entry.getKey() + ": " + entry.getValue());
+//        }
 
 
         //TODO: if query successful do add to bestellung
