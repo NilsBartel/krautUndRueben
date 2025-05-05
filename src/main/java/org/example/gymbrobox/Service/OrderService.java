@@ -22,7 +22,6 @@ public class OrderService {
     public boolean addOrder(BoxRequest boxRequest, String token) {
 
         String userName = tokenService.getUsername(token);
-        System.out.println(userName);
 
         List<Rezept> allRecipes = new ArrayList<>();
         String customBoxName = "custom";
@@ -37,9 +36,7 @@ public class OrderService {
             return false;
         }
 
-        // TODO:
-        orderRepo.placeOrder(allRecipes, userName);
-        return true;
+        return orderRepo.placeOrder(allRecipes, userName);
     }
 
 }

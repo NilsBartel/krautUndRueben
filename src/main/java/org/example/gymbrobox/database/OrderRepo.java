@@ -33,18 +33,13 @@ public class OrderRepo {
         template.update(sql_bestellung, params);
         params.remove("userName");
 
-
         for (Rezept rezept : rezepte) {
             params.put("rezeptName", rezept.getName());
             template.update(sql_bestellung_rezept, params);
             params.remove("rezeptName");
         }
 
-        System.out.println("done");
-
-
-
-        return true; // TODO:
+        return true;
     }
 
 }

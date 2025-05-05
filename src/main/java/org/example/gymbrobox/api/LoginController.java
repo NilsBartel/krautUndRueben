@@ -25,7 +25,6 @@ public class LoginController {
 
 
 
-
     @PostMapping("/account/login")
     @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody

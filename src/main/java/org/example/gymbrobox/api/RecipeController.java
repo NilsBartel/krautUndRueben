@@ -50,19 +50,7 @@ public class RecipeController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "token wrong");
         }
 
-//        System.out.println();
-//        System.out.println("requestbody");
-//        for (Map.Entry<String, String> entry : requestBody.toMap().entrySet()) {
-//            System.out.println(entry.getKey() + ": " + entry.getValue());
-//        }
-
-
-        //TODO: if query successful do add to bestellung
-
         List<Rezept> rezepte = recipeService.getRezepte(requestBody.toMap());
-
-
-
 
         if (rezepte.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not enough recipes");
@@ -83,9 +71,9 @@ public class RecipeController {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "token wrong");
         }
 
-        orderService.addOrder(boxRequest, token);
-
-
+        if (!orderService.addOrder(boxRequest, token)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "order failed");
+        }
 
         return Map.of("status", "success");
     }
@@ -96,7 +84,6 @@ public class RecipeController {
     @ResponseBody
     public Map<String, String>  getCustomRecipe(
         @RequestBody List<CustomZutat> zutaten
-        //@RequestBody CustomRezept requestBody
     ) {
 
         if (!recipeService.customZutaten(zutaten)) {
@@ -105,7 +92,6 @@ public class RecipeController {
 
         HashMap<String, String> map = new HashMap<>();
         map.put("status", "success");
-
 
       return map;
     }
