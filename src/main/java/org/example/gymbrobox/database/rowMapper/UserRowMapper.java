@@ -18,7 +18,7 @@ public class UserRowMapper implements RowMapper<User> {
         user.setEmail(rs.getString("EMAIL"));
         user.setPhoneNumber(rs.getString("TELEFON"));
         user.setDateOfBirth(rs.getObject("GEBURTSDATUM", LocalDate.class));
-    user.setAbo(rs.getBoolean("ABO"));
+        user.setAbo(rs.getBoolean("ABO"));
         user.setStreet(rs.getString("STRASSE"));
         user.setHouseNumber(rs.getString("HAURSNR"));
         user.setZipCode(rs.getString("POSTLEITZAHL"));

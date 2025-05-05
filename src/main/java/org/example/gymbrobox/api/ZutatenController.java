@@ -1,6 +1,7 @@
 package org.example.gymbrobox.api;
 
 
+import org.example.gymbrobox.Service.ZutatService;
 import org.example.gymbrobox.model.Zutat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +13,10 @@ import java.util.List;
 
 @RestController
 public class ZutatenController {
+    private final ZutatService zutatService;
+    public ZutatenController(ZutatService zutatService) {
+        this.zutatService = zutatService;
+    }
 
 
 
@@ -20,10 +25,9 @@ public class ZutatenController {
     @ResponseBody
     public List<Zutat> getZutaten() {
 
-        // TODO:
+        zutatService.getZutaten();
 
-
-        return new ArrayList<Zutat>();
+        return  zutatService.getZutaten();
     }
 
 
