@@ -34,7 +34,7 @@ public class RecipeService {
 
 
 
-        if (queryFilter.containsKey("amount")) {
+        if (queryFilter.containsKey("amount") && queryFilter.get("amount") != null) {
             if (rezepte.size() < Integer.parseInt(queryFilter.get("amount"))) {
                 return Collections.emptyList();
             }
@@ -81,7 +81,7 @@ public class RecipeService {
 
         // TODO put the HAVING part
 
-        if (queryFilter.containsKey("ernährungsart")) {
+        if (queryFilter.containsKey("ernährungsart") && queryFilter.get("ernährungsart") != null) {
             String ernaehrungsString = "WHERE NOT EXISTS (SELECT 1 FROM REZEPT_ZUTAT rz WHERE rz.REZEPTNR = r.REZEPTNR AND rz.ZUTATNR NOT IN (select z.ZUTATNR from ZUTAT z join ZUTAT_ERNAEHRUNGSKATEGORIE ze on z.ZUTATNR = ze.ZUTATNR where ze.ERNAEHRUNGSKATNR in (SELECT e.ERNAEHRUNGSKATNR FROM ERNAEHRUNGSKATEGORIE e WHERE e.PRIORITAET >= (SELECT e2.PRIORITAET FROM ERNAEHRUNGSKATEGORIE e2 WHERE e2.BEZEICHNUNG = :ernährungsart) AND e.TYP = 'ernährungsart')))";
 
             if (Objects.equals(queryFilter.get("ernährungsart"), "vegan")) {
@@ -116,7 +116,7 @@ public class RecipeService {
 
 
 
-        if (queryFilter.containsKey("kohlenhydrate")) {
+        if (queryFilter.containsKey("kohlenhydrate") && queryFilter.get("kohlenhydrate") != null) {
             if (Objects.equals(queryFilter.get("kohlenhydrate"), "low")) {
                 if (addedFilter) {
                     sql = sql.concat(" AND ");
@@ -138,7 +138,7 @@ public class RecipeService {
             }
         }
 
-        if (queryFilter.containsKey("protein")) {
+        if (queryFilter.containsKey("protein") && queryFilter.get("protein") != null) {
             if (Objects.equals(queryFilter.get("protein"), "low")) {
                 if (addedFilter) {
                     sql = sql.concat(" AND ");
@@ -160,7 +160,7 @@ public class RecipeService {
             }
         }
 
-        if (queryFilter.containsKey("fat")) {
+        if (queryFilter.containsKey("fat") && queryFilter.get("fat") != null) {
             if (Objects.equals(queryFilter.get("fat"), "low")) {
                 if (addedFilter) {
                     sql = sql.concat(" AND ");
@@ -182,7 +182,7 @@ public class RecipeService {
             }
         }
 
-        if (queryFilter.containsKey("co2")) {
+        if (queryFilter.containsKey("co2") && queryFilter.get("co2") != null) {
             if (Objects.equals(queryFilter.get("co2"), "low")) {
                 if (addedFilter) {
                     sql = sql.concat(" AND ");
@@ -204,7 +204,7 @@ public class RecipeService {
             }
         }
 
-        if (queryFilter.containsKey("ingredientLimit")) {
+        if (queryFilter.containsKey("ingredientLimit") && queryFilter.get("ingredientLimit") != null) {
             if (addedFilter) {
                 sql = sql.concat(" AND ");
             } else {

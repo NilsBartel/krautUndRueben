@@ -23,7 +23,7 @@ public class OrderService {
 
         String userName = tokenService.getUsername(token);
 
-        List<Rezept> allRecipes = new ArrayList<>();
+        List<String> allRecipes = new ArrayList<>();
         String customBoxName = "custom";
 
         for (Box box : boxRequest.getBoxen()) {

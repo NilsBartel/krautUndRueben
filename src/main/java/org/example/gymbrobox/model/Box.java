@@ -5,7 +5,7 @@ import java.util.List;
 public class Box {
 
     String typ;
-    List<Rezept> rezepte;
+    List<String> rezepte;
 
 
     public Box() {
@@ -19,11 +19,11 @@ public class Box {
         this.typ = typ;
     }
 
-    public List<Rezept> getRezepte() {
+    public List<String> getRezepte() {
         return rezepte;
     }
 
-    public void setRezepte(List<Rezept> rezepte) {
+    public void setRezepte(List<String> rezepte) {
         this.rezepte = rezepte;
     }
 }
