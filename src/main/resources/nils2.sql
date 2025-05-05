@@ -97,7 +97,55 @@ WHERE NOT EXISTS (
 
 -- user löschen nach DSGVO
 
+-- hat bestellung:      wellensteyn
+-- keine bestellung:    urocki
+SET @target_username = 'wellensteyn';
+SET @cutoff_date = DATE_SUB(CURDATE(), INTERVAL 10 YEAR);
+
+SELECT KUNDENNR
+FROM KUNDE
+WHERE USERNAME = @target_username
+  AND KUNDENNR NOT IN (
+    SELECT KUNDENNR
+    FROM BESTELLUNG
+    WHERE BESTELLDATUM >= @cutoff_date
+);
+
+-- wenn das null returned
+-- delete
+
+-- wenn bestellung inerhalb der letzten 10 jahren
+--   wenn bestellung mehr als 10 jahre, dann kundenNr löschen
+--   LOGIN LÖSCHEN
+--   KUNDE (geburstdatum, email, telefon, abo=false) anonymisieren, username zu null
+
+
+
+-- wenn KEINE bestellung inerhalb der letzten 10 jahren
+--   zuerst kundennr löschen
+--   LOGIN LÖSCHEN
+--   KUNDE LÖSCHEN
+
 -- auskunt über userdaten nach DSGVO
+SELECT
+    k.KUNDENNR,
+    k.VORNAME,
+    k.NACHNAME,
+    k.GEBURTSDATUM,
+    k.TELEFON,
+    k.EMAIL,
+    k.ABO,
+    a.STRASSE,
+    a.HAURSNR,
+    a.POSTLEITZAHL,
+    a.ORT,
+    a.STADT,
+    a.LAND,
+    l.USERNAME
+FROM KUNDE k
+         LEFT JOIN ADRESSE a ON k.ADRESSNR = a.ADRESSENR
+         LEFT JOIN LOGIN l ON k.USERNAME = l.USERNAME
+WHERE k.KUNDENNR = 2001; -- KundenNr 2001-2009
 
 -- zeige alle kunden mit ihren bestellungen an
 SELECT
@@ -110,3 +158,5 @@ FROM
     KUNDE k
         LEFT JOIN
     BESTELLUNG b ON k.KUNDENNR = b.KUNDENNR;
+
+
