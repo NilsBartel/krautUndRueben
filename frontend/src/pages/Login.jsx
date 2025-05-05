@@ -77,6 +77,29 @@ function Login() {
 
     function onRegistration(e) {
       let form = e.target;
+      console.log(form);
+      const data = {
+        userAccount: {
+          username: form.username.value,
+          password: form.password.value,
+          securityAnswer: form.securityAnswer.value
+        },
+        user: {
+          firstName: form.name.value,
+          lastName: form.nachname.value,
+          email: form.email.value,
+          phoneNumber: form.phone.value,
+          dateOfBirth: form.birthdate.value,
+          street: form.street.value,
+          houseNumber: form.houseNumber.value,
+          zipCode: form.postalCode.value,
+          cityDistrict: form.city.value,
+          city: form.state.value,
+          country: form.country.value
+        }
+      };
+
+      console.log("JSON to be sent:", data);
 
       fetch(apiPath + "/account/register", {
         method: 'POST',
@@ -84,21 +107,7 @@ function Login() {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          username: form.username.value,
-          password: form.password.value,
-          securityQuestion: form.securityAnswer.value,
-          firstName: form.name.value,
-          lastName: form.nachname.value,
-          email: form.email.value,
-          abo: subscribe,
-          street: form.street.value,
-          houseNumber: form.houseNumber.value,
-          zipCode: form.postalCode.value,
-          cityDistrict: form.city.value,
-          city: form.state.value,
-          country: form.country.value
-        })
+        body: JSON.stringify(data)
       })
         .then((response) => {
           return response.json().then(json => {
