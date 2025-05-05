@@ -21,6 +21,8 @@ function Login() {
   const [country, setCountry] = useState('');
   const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
 
 
 
@@ -88,8 +90,8 @@ function Login() {
           firstName: form.name.value,
           lastName: form.nachname.value,
           email: form.email.value,
-          phoneNumber: form.phone.value,
-          dateOfBirth: form.birthdate.value,
+          phoneNumber: form.phoneNumber.value,
+          dateOfBirth: form.dateOfBirth.value,
           street: form.street.value,
           houseNumber: form.houseNumber.value,
           zipCode: form.postalCode.value,
@@ -298,6 +300,8 @@ function Login() {
                 />
               </div>
 
+
+
               <div className="mb-3">
                 <label htmlFor="password" className="form-label">Passwort</label>
                 <input
@@ -309,6 +313,32 @@ function Login() {
                   required
                 />
               </div>
+
+              <div className="mb-3">
+                <label htmlFor="phoneNumber" className="form-label">Telefonnummer</label>
+                <input
+                  type="tel"
+                  className="form-control"
+                  id="phoneNumber"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="mb-3">
+                <label htmlFor="dateOfBirth" className="form-label">Geburtsdatum</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="dateOfBirth"
+                  value={dateOfBirth}
+                  onChange={(e) => setDateOfBirth(e.target.value)}
+                  required
+                />
+              </div>
+
+
 
 
 
