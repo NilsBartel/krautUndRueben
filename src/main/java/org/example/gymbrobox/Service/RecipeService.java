@@ -29,14 +29,26 @@ public class RecipeService {
 
         List<Rezept> rezepte = recipeRepo.getFilteredRezeptList((String) result.get("sql"), (MapSqlParameterSource) result.get("params"));
 
+
+
+
+
+
         if (queryFilter.containsKey("amount")) {
             if (rezepte.size() < Integer.parseInt(queryFilter.get("amount"))) {
                 return Collections.emptyList();
             }
+
+            // TODO: add rezepte to order
+
             return chooseRandomRezepte(Integer.parseInt(queryFilter.get("amount")), rezepte);
         }
 
         return rezepte;
+    }
+
+    private boolean addRezepteToOrder(List<Rezept> rezepte) {
+
     }
 
     private List<Rezept> chooseRandomRezepte(int amount, List<Rezept> rezepte) {

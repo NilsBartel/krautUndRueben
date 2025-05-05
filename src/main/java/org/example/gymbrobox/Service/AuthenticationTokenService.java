@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 public final class AuthenticationTokenService {
 
     //private final int TOKEN_LENGTH = 32;
-    private final int TOKEN_LIFETIME_MINUTES = 60;
+    private final int TOKEN_LIFETIME_MINUTES = 4320;
     private final Map<String, Map.Entry<String, Timestamp>> authMap = new HashMap<>();
 
 
