@@ -48,7 +48,9 @@ public class RecipeService {
     }
 
     private boolean addRezepteToOrder(List<Rezept> rezepte) {
+        // TODO:
 
+        return true;
     }
 
     private List<Rezept> chooseRandomRezepte(int amount, List<Rezept> rezepte) {

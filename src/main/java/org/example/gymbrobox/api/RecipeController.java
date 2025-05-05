@@ -1,25 +1,19 @@
 package org.example.gymbrobox.api;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.xml.bind.SchemaOutputResolver;
 import org.example.gymbrobox.Service.AuthenticationTokenService;
+import org.example.gymbrobox.Service.OrderService;
 import org.example.gymbrobox.Service.RecipeService;
 import org.example.gymbrobox.model.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -27,9 +21,11 @@ public class RecipeController {
 
     private final RecipeService recipeService;
     private final AuthenticationTokenService tokenService;
-    public RecipeController(RecipeService recipeService, AuthenticationTokenService tokenService) {
+    private final OrderService orderService;
+    public RecipeController(RecipeService recipeService, AuthenticationTokenService tokenService, OrderService orderService) {
         this.recipeService = recipeService;
         this.tokenService = tokenService;
+        this.orderService = orderService;
     }
 
     @ApiResponses(value = {
@@ -72,6 +68,26 @@ public class RecipeController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not enough recipes");
         }
         return rezepte;
+    }
+
+
+
+    @PostMapping("/recipe/order")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public Map<String, String> orderRecipe(
+            @RequestBody BoxRequest boxRequest,
+            @RequestHeader(value = "token", required = false) String token
+    ) {
+
+        if (!tokenService.authenticate(token)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "token wrong");
+        }
+
+        orderService.addOrder(boxRequest, token);
+
+
+
+        return Map.of("status", "success");
     }
 
 
