@@ -1,15 +1,15 @@
 # Auswahl aller Zutaten eines Rezepts nach RezeptNr
-SELECT * FROM zutat z
-JOIN rezept_zutat rz
+SELECT * FROM ZUTAT z
+JOIN REZEPT_ZUTAT rz
 ON z.ZUTATNR = rz.ZUTATNR
 WHERE rz.REZEPTNR = 1; -- Hier beliebige RezeptNr einfügen
 
 # Auswahl aller Zutaten eines Rezepts nach Name
-SELECT * FROM zutat z
-JOIN rezept_zutat rz
+SELECT * FROM ZUTAT z
+JOIN REZEPT_ZUTAT rz
 ON z.ZUTATNR = rz.ZUTATNR
 WHERE rz.REZEPTNR IN (
-	SELECT r.REZEPTNR FROM rezept r
+	SELECT r.REZEPTNR FROM REZEPT r
 	WHERE r.`NAME` = 'Lachslasagne' -- Hier beliebigen Namen einfügen
 );
 
@@ -28,7 +28,7 @@ WHERE NOT EXISTS (
             WHERE e.PRIORITAET >= (
                 SELECT e2.PRIORITAET
                 FROM ERNAEHRUNGSKATEGORIE e2
-                WHERE e2.BEZEICHNUNG = 'frutarisch' -- the one to edit
+                WHERE e2.BEZEICHNUNG = 'frutarisch' -- 'frutarisch', 'vegan', 'vegetarisch', 'fleisch essend'
             ) AND e.TYP = 'ernährungsart'
         )
     )
@@ -44,20 +44,20 @@ WHERE r.RezeptNr IN (
 # Berechnung der durschnittlichen Nährwerte einer Bestellung
 DROP VIEW Totals;
 CREATE VIEW Totals AS
-SELECT SUM((z.Kalorien / 100) * rz.MENGE) AS Total FROM zutat z
-JOIN rezept_zutat rz
+SELECT SUM((z.Kalorien / 100) * rz.MENGE) AS Total FROM ZUTAT z
+JOIN REZEPT_ZUTAT rz
 ON z.ZUTATNR = rz.ZUTATNR
 WHERE rz.REZEPTNR IN (
-	SELECT br.REZEPTNR FROM bestellung_rezept br
-	WHERE br.BESTELLNR IN (1001) -- Hier beliebige BestellNr angeben
+	SELECT br.REZEPTNR FROM BESTELLUNG_REZEPT br
+	WHERE br.BESTELLNR IN (1002) -- Hier beliebige BestellNr angeben
 )
 GROUP BY rz.REZEPTNR;
 
 SELECT AVG(t.Total) FROM Totals AS t;
 
 # Die meistbestellten Rezepte
-SELECT br.REZEPTNR, COUNT(br.REZEPTNR) AS Haeufigkeit FROM bestellung_rezept br
-JOIN rezept r
+SELECT br.REZEPTNR, COUNT(br.REZEPTNR) AS Haeufigkeit FROM BESTELLUNG_REZEPT br
+JOIN REZEPT r
 ON br.REZEPTNR = r.REZEPTNR
 GROUP BY br.REZEPTNR
 ORDER BY Haeufigkeit DESC;
