@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,7 +74,7 @@ public class RecipeController {
     @PostMapping("/recipe/custom")
     @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
-    public String getCustomRecipe(
+    public Map<String, String>  getCustomRecipe(
         @RequestBody List<CustomZutat> zutaten
         //@RequestBody CustomRezept requestBody
     ) {
@@ -82,8 +83,11 @@ public class RecipeController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not enough recipes");
         }
 
+        HashMap<String, String> map = new HashMap<>();
+        map.put("status", "success");
 
-        return "Success";
+
+      return map;
     }
 
 
