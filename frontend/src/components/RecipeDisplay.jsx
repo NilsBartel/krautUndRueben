@@ -1,12 +1,16 @@
 import "./RecipeDisplay.css"
 
 function RecipieDisplay({ recipes, hidden, boxData }) {
+    console.log(recipes);
     function addToCart() {
 
         let cart = JSON.parse(localStorage.getItem("cart"));
         if (cart == null) {
             cart = { items: [] };
         }
+
+
+
 
         cart.items.push({
             name: boxData.name,
@@ -36,9 +40,14 @@ function RecipieDisplay({ recipes, hidden, boxData }) {
         <div className="recipeContainer">
             <h1>Rezepte: </h1>
             {recipes.map((recipe, index) => (
-                <li key={index} >
-                    <ul>{recipe.name}</ul>
-                </li>
+                <div key={index} >
+                    <h2>{recipe.name}</h2>
+                    <ul>
+                        {recipe.zutaten.map((zutat, index) => (
+                            <li key={index}>{`${zutat.menge}${zutat.einheit} ${zutat.name}`}</li>
+                        ))}
+                    </ul>
+                </div>
             ))}
 
             <button onClick={addToCart}>In den Warenkorb</button>

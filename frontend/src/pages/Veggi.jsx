@@ -5,7 +5,7 @@ import { useState } from 'react';
 function Veggi() {
     const boxData = {
         name: "Veggi Box",
-        id: "veggi"
+        id: "vegetarisch"
     }
 
     return (

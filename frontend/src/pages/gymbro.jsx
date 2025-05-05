@@ -5,7 +5,7 @@ import { useState } from 'react';
 function Gymbro() {
     const boxData = {
         name: "Gym Bro Box",
-        id: "gymbro"
+        id: "frutarisch"
     }
 
     return (

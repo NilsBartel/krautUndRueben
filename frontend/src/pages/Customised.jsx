@@ -1,15 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../components/Header';
 
-const ingredientsList = [
-    'Ananas', 'Apfel', 'Avocado', 'Bananen', 'Basilikum', 'Brokkoli', 'Butter', 'Couscous',
-    'Currypaste', 'Erdnussbutter', 'Ei', 'Gemüsebrühe', 'Gurke', 'Hähnchenbrustfilet', 'Ingwer',
-    'Kartoffel', 'Kartoffeln', 'Käse', 'Kichererbsen', 'Knoblauch', 'Kokosmilch', 'Lasagne Nudeln',
-    'Lauch', 'Lachs', 'Limette', 'Mango', 'Mehl', 'Mozzarella', 'Paprika', 'Parmesan', 'Pasta',
-    'Pesto', 'Quinoa', 'Rote Linsen', 'Reis', 'Rosinen', 'Rucola', 'Sahne', 'Schalotte',
-    'Schnittlauch', 'Sojasoße', 'Spinat', 'Süßkartoffel', 'Tofu', 'Tofu-Würstchen', 'Tomate',
-    'Vollmilch. 3.5%', 'Wiener Würstchen', 'Zitrone', 'Zucchini', 'Zwiebel'
-];
+// const ingredientsList = [
+//     'Ananas', 'Apfel', 'Avocado', 'Bananen', 'Basilikum', 'Brokkoli', 'Butter', 'Couscous',
+//     'Currypaste', 'Erdnussbutter', 'Ei', 'Gemüsebrühe', 'Gurke', 'Hähnchenbrustfilet', 'Ingwer',
+//     'Kartoffel', 'Kartoffeln', 'Käse', 'Kichererbsen', 'Knoblauch', 'Kokosmilch', 'Lasagne Nudeln',
+//     'Lauch', 'Lachs', 'Limette', 'Mango', 'Mehl', 'Mozzarella', 'Paprika', 'Parmesan', 'Pasta',
+//     'Pesto', 'Quinoa', 'Rote Linsen', 'Reis', 'Rosinen', 'Rucola', 'Sahne', 'Schalotte',
+//     'Schnittlauch', 'Sojasoße', 'Spinat', 'Süßkartoffel', 'Tofu', 'Tofu-Würstchen', 'Tomate',
+//     'Vollmilch. 3.5%', 'Wiener Würstchen', 'Zitrone', 'Zucchini', 'Zwiebel'
+// ];
+
+
+
+
+
+
 
 
 function Customized() {
@@ -22,6 +28,29 @@ function Customized() {
             [name]: checked ? 1 : undefined
         }));
     };
+
+    let [ingredientsList, setIngredientsList] = useState([]);
+
+
+    useEffect(() => {
+        fetch(apiPath + "/zutaten")
+            .then((response) => {
+                return response.json().then(json => {
+                    return response.ok ? json : Promise.reject(json);
+                });
+            })
+            .then((response) => {
+                console.log(response);
+                setIngredientsList(response);
+
+
+            })
+            .catch((response) => {
+                console.log(response);
+                alert(response.error)
+
+            });
+    }, []);
 
     const handleQuantityChange = (e, ingredient) => {
         const value = parseInt(e.target.value, 10);
@@ -37,7 +66,7 @@ function Customized() {
             .map(([name, qty]) => {
                 return {
                     name: name,
-                    anzahl: qty
+                    menge: qty
                 }
             });
 
@@ -48,7 +77,7 @@ function Customized() {
 
         console.log("Bestellung:", selected);
         //addToCart();
-        fetch(apiPath + "/recipe", {
+        fetch(apiPath + "/recipe/custom", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -124,22 +153,22 @@ function Customized() {
                         }}
                     >
                         {ingredientsList.map((ingredient) => (
-                            <div key={ingredient}>
+                            <div key={ingredient.name}>
                                 <label>
                                     <input
                                         type="checkbox"
-                                        name={ingredient}
-                                        checked={!!selectedIngredients[ingredient]}
+                                        name={ingredient.name}
+                                        checked={!!selectedIngredients[ingredient.name]}
                                         onChange={handleCheckboxChange}
                                     />
-                                    {` ${ingredient}`}
+                                    {` ${ingredient.name}`}
                                 </label>
-                                {selectedIngredients[ingredient] !== undefined && (
+                                {selectedIngredients[ingredient.name] !== undefined && (
                                     <input
                                         type="number"
                                         min="1"
-                                        value={selectedIngredients[ingredient]}
-                                        onChange={(e) => handleQuantityChange(e, ingredient)}
+                                        value={selectedIngredients[ingredient.name]}
+                                        onChange={(e) => handleQuantityChange(e, ingredient.name)}
                                         style={{ marginLeft: '10px', width: '60px' }}
                                     />
                                 )}

@@ -5,7 +5,7 @@ import { useState } from 'react';
 function Mixed() {
     const boxData = {
         name: "Mixed Box",
-        id: "mixed"
+        id: "mischKost"
     }
 
     return (

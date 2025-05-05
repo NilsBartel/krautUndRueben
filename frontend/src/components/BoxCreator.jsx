@@ -5,11 +5,11 @@ import RecipieDisplay from './RecipeDisplay';
 function BoxCreator({ boxData }) {
     const [filters, setFilters] = useState({
         rezepte: 1,
-        kohlenhydrate: 'low',
-        kalorien: 'niedrig',
-        proteine: 'niedrig',
-        fett: 'niedrig',
-        co2: 'niedrig',
+        kohlenhydrate: 'egali',
+        kalorien: 'egali',
+        proteine: 'egali',
+        fett: 'egali',
+        co2: 'egali',
         zutaten: 1,
     });
     const [recipies, setRecipies] = useState([]);
@@ -24,7 +24,7 @@ function BoxCreator({ boxData }) {
     };
 
     const handleSubmit = () => {
-        fetch(apiPath + "/recipe", {
+        fetch(apiPath + "/recipe/filter", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -49,7 +49,7 @@ function BoxCreator({ boxData }) {
             })
             .then((response) => {
                 console.log(response);
-                setRecipies(response.recipes);
+                setRecipies(response);
                 setShowRecipes(true);
             })
             .catch((response) => {
@@ -83,6 +83,7 @@ function BoxCreator({ boxData }) {
                 <label>
                     Kohlenhydrate:
                     <select name="kohlenhydrate" value={filters.kohlenhydrate} onChange={handleChange}>
+                        <option selected value="Egali">egali</option>
                         <option value="low">niedrig</option>
                         <option value="high">Hoch</option>
                     </select>
@@ -92,6 +93,7 @@ function BoxCreator({ boxData }) {
                 <label>
                     Kalorien:
                     <select name="kalorien" value={filters.kalorien} onChange={handleChange}>
+                        <option selected value="Egali">egali</option>
                         <option value="low">niedrig</option>
                         <option value="high">Hoch</option>
                     </select>
@@ -101,6 +103,7 @@ function BoxCreator({ boxData }) {
                 <label>
                     Proteine:
                     <select name="proteine" value={filters.proteine} onChange={handleChange}>
+                        <option selected value="Egali">egali</option>
                         <option value="low">niedrig</option>
                         <option value="high">Hoch</option>
                     </select>
@@ -110,6 +113,7 @@ function BoxCreator({ boxData }) {
                 <label>
                     Fett:
                     <select name="fett" value={filters.fett} onChange={handleChange}>
+                        <option selected value="Egali">egali</option>
                         <option value="low">niedrig</option>
                         <option value="high">Hoch</option>
                     </select>
@@ -119,6 +123,7 @@ function BoxCreator({ boxData }) {
                 <label>
                     CO₂-Bilanz:
                     <select name="co2" value={filters.co2} onChange={handleChange}>
+                        <option selected value="Egali">egali</option>
                         <option value="low">niedrig</option>
                         <option value="high">Hoch</option>
                     </select>

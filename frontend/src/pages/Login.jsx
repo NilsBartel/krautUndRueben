@@ -120,7 +120,7 @@ function Login() {
           console.log(response);
 
           setToken(response.token)
-          // navigate("/");
+          navigate("/");
         })
         .catch((response) => {
           console.log(response);
