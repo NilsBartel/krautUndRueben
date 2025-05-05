@@ -1,10 +1,13 @@
 import { useEffect, useState, useRef } from "react";
 import "./ShoppingCartModal.css";
+import { getToken } from "../lib/token";
 
 function ShoppingCartModal(props) {
     const [cartItems, setCartItems] = useState([]);
     const [isOpen, setOpen] = useState(props.isOpen)
     const dialog = useRef(null)
+
+    const apiPath = "http://localhost:8080"
 
     useEffect(() => {
         updateCart();
@@ -50,10 +53,32 @@ function ShoppingCartModal(props) {
     }
 
     function handleOrder() {
-        clearCart();
-        dialog.current.close();
-        props.onClose();
-        alert("Danke fürs Bestellen!");
+
+        fetch(apiPath + "/recipe/filter", {
+            method: 'POST',
+            headers: {
+                "token": getToken(),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                boxen: cartItems
+            })
+        })
+            .then((response) => {
+                return response.json().then(json => {
+                    return response.ok ? json : Promise.reject(json);
+                });
+            })
+            .then((response) => {
+                clearCart();
+                dialog.current.close();
+                props.onClose();
+            })
+            .catch((response) => {
+                console.log(response);
+                alert(response.error)
+            });
     }
 
     return (
@@ -66,7 +91,12 @@ function ShoppingCartModal(props) {
                 {cartItems.length > 0 ? (
                     cartItems.map((item, index) => (
                         <div className="cartItem" key={index}>
-                            <p>{item.name}</p>
+                            < div className="cartItemInput" >
+
+                                <h3>{item.name}</h3>
+                                <ul> {item.rezepte.map((rezept, index) => (
+                                    <li key={index}>{rezept}</li>))}</ul>
+                            </div>
                             <button onClick={() => removeItem(item.key)}>Entfernen</button>
                         </div>
                     ))

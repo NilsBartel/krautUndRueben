@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import "./BoxCreator.css"
 import RecipieDisplay from './RecipeDisplay';
+import { getToken } from '../lib/token';
 
 function BoxCreator({ boxData }) {
     const [filters, setFilters] = useState({
@@ -27,6 +28,7 @@ function BoxCreator({ boxData }) {
         fetch(apiPath + "/recipe/filter", {
             method: 'POST',
             headers: {
+                "token": getToken(),
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },

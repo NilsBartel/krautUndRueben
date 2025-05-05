@@ -60,13 +60,17 @@ function Customized() {
         }));
     };
 
+
+
+
+
     const handleSubmit = () => {
         const selected = Object.entries(selectedIngredients)
             .filter(([_, qty]) => qty)
             .map(([name, qty]) => {
                 return {
-                    name: name,
-                    menge: qty
+                    menge: qty,
+                    name: name
                 }
             });
 
@@ -74,6 +78,7 @@ function Customized() {
             alert('Bitte wähle mindestens eine Zutat aus.');
             return;
         }
+
 
         console.log("Bestellung:", selected);
         //addToCart();
@@ -83,9 +88,7 @@ function Customized() {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                zutaten: selected
-            })
+            body: JSON.stringify(selected)
         })
             .then((response) => {
                 return response.json().then(json => {
@@ -99,7 +102,9 @@ function Customized() {
             })
             .then((response) => {
                 console.log(response);
-                addToCart();
+                if (response.status === "success") {
+                    addToCart();
+                }
                 // setRecipies(response.recipes);
                 // saveToken(response.token);
                 // navigate("/");
@@ -114,6 +119,7 @@ function Customized() {
             });
 
 
+
         function addToCart() {
 
             let cart = JSON.parse(localStorage.getItem("cart"));
@@ -123,7 +129,7 @@ function Customized() {
 
             cart.items.push({
                 name: "Customized Box",
-                id: "custom",
+                typ: "custom",
                 key: Date.now()
             });
 

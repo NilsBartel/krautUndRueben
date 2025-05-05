@@ -2,6 +2,8 @@ import "./RecipeDisplay.css"
 
 function RecipieDisplay({ recipes, hidden, boxData }) {
     console.log(recipes);
+
+
     function addToCart() {
 
         let cart = JSON.parse(localStorage.getItem("cart"));
@@ -9,12 +11,10 @@ function RecipieDisplay({ recipes, hidden, boxData }) {
             cart = { items: [] };
         }
 
-
-
-
         cart.items.push({
             name: boxData.name,
-            id: boxData.id,
+            typ: boxData.id,
+            rezepte: recipes.map((rezept) => rezept.name),
             key: Date.now()
         });
 
