@@ -12,7 +12,4 @@ Documentation:
 1. run the program  
 http://localhost:8080/swagger-ui.html
 
-
-### Endpoints under construction:
-- /recipe -> returns test data
-- /recipe/filter -> returns test data
+   
