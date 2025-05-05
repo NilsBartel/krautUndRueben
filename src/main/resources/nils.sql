@@ -44,7 +44,7 @@ WHERE r.REZEPTNR IN (
                   WHERE rz2.RezeptNr = rz.REZEPTNR
               )
                         # Hier den gewünschten Kalorienfilter angeben
-    ) >2000
+    ) > 800
     );
 
 
