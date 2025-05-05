@@ -36,6 +36,7 @@ public class RecipeController {
                     content = @Content)
     })
     @PostMapping("/recipe/filter")
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     public List<Rezept> getFilteredRecipes(
             @RequestBody RecipeFilters requestBody
@@ -59,6 +60,7 @@ public class RecipeController {
 
 
     @PostMapping("/recipe/custom")
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     public Rezept getCustomRecipe(
         @RequestBody CustomRezept requestBody
