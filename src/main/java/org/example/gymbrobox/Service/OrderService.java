@@ -1,5 +1,6 @@
 package org.example.gymbrobox.Service;
 
+import org.example.gymbrobox.database.OrderRepo;
 import org.example.gymbrobox.model.Box;
 import org.example.gymbrobox.model.BoxRequest;
 import org.example.gymbrobox.model.Rezept;
@@ -12,8 +13,10 @@ import java.util.Objects;
 @Service
 public class OrderService {
     private final AuthenticationTokenService tokenService;
-    public OrderService(AuthenticationTokenService tokenService) {
+    private final OrderRepo orderRepo;
+    public OrderService(AuthenticationTokenService tokenService, OrderRepo orderRepo) {
         this.tokenService = tokenService;
+        this.orderRepo = orderRepo;
     }
 
     public boolean addOrder(BoxRequest boxRequest, String token) {
@@ -35,6 +38,7 @@ public class OrderService {
         }
 
         // TODO:
+        orderRepo.placeOrder(allRecipes, userName);
         return true;
     }
 
