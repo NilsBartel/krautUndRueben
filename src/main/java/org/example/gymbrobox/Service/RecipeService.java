@@ -19,6 +19,11 @@ public class RecipeService {
     }
 
 
+    public boolean customZutaten(List<CustomZutat> zutaten) {
+        return recipeRepo.checkZutaten(zutaten);
+    }
+
+
     public List<Rezept> getRezepte(Map<String, String> queryFilter) {
         Map<String, Object> result = buildSqlRezeptString(queryFilter);
 

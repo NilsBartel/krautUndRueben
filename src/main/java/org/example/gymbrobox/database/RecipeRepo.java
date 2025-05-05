@@ -1,13 +1,17 @@
 package org.example.gymbrobox.database;
 
 import org.example.gymbrobox.database.rowMapper.RezeptWithZutatenExtractor;
+import org.example.gymbrobox.model.CustomZutat;
 import org.example.gymbrobox.model.Rezept;
+import org.example.gymbrobox.model.Zutat;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class RecipeRepo {
@@ -53,10 +57,32 @@ public class RecipeRepo {
                 //new WholeRezeptRowMapper()
         );
 
-
-
         return rezeptList;
     }
+
+
+    public boolean checkZutaten (List<CustomZutat> zutaten) {
+        boolean zutatenFound = true;
+        String sql = "SELECT CASE WHEN BESTAND >= :menge THEN 'TRUE' ELSE 'FALSE' END AS STATUS FROM ZUTAT WHERE BEZEICHNUNG = :name;";
+
+        for (CustomZutat zutat : zutaten) {
+
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("menge", zutat.getMenge());
+            paramMap.put("name", zutat.getName());
+
+            String string = template.queryForObject(sql, paramMap, String.class);
+            if (string.equals("FALSE")) {
+                zutatenFound = false;
+            }
+
+            paramMap.remove("name");
+            paramMap.remove("menge");
+        }
+        return zutatenFound;
+    }
+
+
 
 }
 

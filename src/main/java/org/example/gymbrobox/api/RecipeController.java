@@ -40,6 +40,7 @@ public class RecipeController {
     @ResponseBody
     public List<Rezept> getFilteredRecipes(
             @RequestBody RecipeFilters requestBody
+
     ) {
 
         System.out.println();
@@ -62,24 +63,17 @@ public class RecipeController {
     @PostMapping("/recipe/custom")
     @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
-    public Rezept getCustomRecipe(
-        @RequestBody CustomRezept requestBody
+    public String getCustomRecipe(
+        @RequestBody List<CustomZutat> zutaten
+        //@RequestBody CustomRezept requestBody
     ) {
 
-
-        System.out.println(requestBody.getName());
-        System.out.println(requestBody.getPortionen() + " Portionen");
-        System.out.println("Zutaten:");
-        for (Zutat zutat : requestBody.getZutaten()) {
-            System.out.println(zutat.getName() + " " + (int) zutat.getMenge() + " " + zutat.getEinheit());
+        if (!recipeService.customZutaten(zutaten)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Not enough recipes");
         }
 
 
-
-
-
-
-        return new Rezept();
+        return "Success";
     }
 
 
