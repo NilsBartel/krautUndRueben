@@ -37,7 +37,16 @@ public class LoginController {
         return Map.of("token", token);
     }
 
+    @RequestMapping(value = "/account/registers", method = RequestMethod.OPTIONS)
+    public String options() {
+        return "OPTIONS";
+    }
+
+
+
+
     @PostMapping("/account/register")
+    @CrossOrigin(origins = "http://localhost:3000")
     @ResponseBody
     public Map<String, String> register(@RequestBody CombinedUserUserAccount combinedUserUserAccount) {
         User user = combinedUserUserAccount.getUser();
