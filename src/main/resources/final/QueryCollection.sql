@@ -1,19 +1,26 @@
 # Auswahl aller Zutaten eines Rezepts nach RezeptNr
-SELECT * FROM ZUTAT z
-JOIN REZEPT_ZUTAT rz
-ON z.ZUTATNR = rz.ZUTATNR
-WHERE rz.REZEPTNR = 1; -- Hier beliebige RezeptNr einfügen
+SET @RezeptNr = 1;
 
-# Auswahl aller Zutaten eines Rezepts nach Name
-SELECT * FROM ZUTAT z
-JOIN REZEPT_ZUTAT rz
+SELECT * FROM zutat z
+JOIN rezept_zutat rz
+ON z.ZUTATNR = rz.ZUTATNR
+WHERE rz.REZEPTNR = @RezeptNr;
+
+# Auswahl aller Zutaten eines Rezepts nach Name (nicht zwingend Eindeutig)
+SET @RezeptName = 'Lachslasagne';
+
+SELECT * FROM zutat z
+JOIN rezept_zutat rz
 ON z.ZUTATNR = rz.ZUTATNR
 WHERE rz.REZEPTNR IN (
-	SELECT r.REZEPTNR FROM REZEPT r
-	WHERE r.`NAME` = 'Lachslasagne' -- Hier beliebigen Namen einfügen
+	SELECT r.REZEPTNR FROM rezept r
+	WHERE r.`NAME` = @RezeptName
 );
 
 # Auswahl aller Rezepte einer bestimmten Ernährungskategorie
+SET @KategorieBezeichnung = 'frutarisch';
+SET @KategorieTyp = 'ernährungsart';
+
 SELECT r.*
 FROM REZEPT r
 WHERE NOT EXISTS (
@@ -28,8 +35,8 @@ WHERE NOT EXISTS (
             WHERE e.PRIORITAET >= (
                 SELECT e2.PRIORITAET
                 FROM ERNAEHRUNGSKATEGORIE e2
-                WHERE e2.BEZEICHNUNG = 'frutarisch' -- 'frutarisch', 'vegan', 'vegetarisch', 'fleisch essend'
-            ) AND e.TYP = 'ernährungsart'
+                WHERE e2.BEZEICHNUNG = @KategorieBezeichnung
+            ) AND e.TYP = @KategorieTyp
         )
     )
 );
@@ -42,27 +49,30 @@ WHERE r.RezeptNr IN (
 );
 
 # Berechnung der durschnittlichen Nährwerte einer Bestellung
-DROP VIEW Totals;
+DROP VIEW IF EXISTS Totals;
+
 CREATE VIEW Totals AS
-SELECT SUM((z.Kalorien / 100) * rz.MENGE) AS Total FROM ZUTAT z
-JOIN REZEPT_ZUTAT rz
+SELECT SUM((z.Kalorien / 100) * rz.MENGE) AS Total FROM zutat z
+JOIN rezept_zutat rz
 ON z.ZUTATNR = rz.ZUTATNR
 WHERE rz.REZEPTNR IN (
-	SELECT br.REZEPTNR FROM BESTELLUNG_REZEPT br
-	WHERE br.BESTELLNR IN (1002) -- Hier beliebige BestellNr angeben
+	SELECT br.REZEPTNR FROM bestellung_rezept br
+	WHERE br.BESTELLNR IN (1001) -- Hier beliebige BestellNr angeben
 )
 GROUP BY rz.REZEPTNR;
 
 SELECT AVG(t.Total) FROM Totals AS t;
 
 # Die meistbestellten Rezepte
-SELECT br.REZEPTNR, COUNT(br.REZEPTNR) AS Haeufigkeit FROM BESTELLUNG_REZEPT br
-JOIN REZEPT r
+SELECT br.REZEPTNR, COUNT(br.REZEPTNR) AS Haeufigkeit FROM bestellung_rezept br
+JOIN rezept r
 ON br.REZEPTNR = r.REZEPTNR
 GROUP BY br.REZEPTNR
 ORDER BY Haeufigkeit DESC;
 
 # Auswahl aller Rezepte, die eine bestimmte Kalorienmenge nicht überschreiten 
+SET @MaxKalorien = 700;
+
 SELECT
     r.*
 FROM REZEPT r
@@ -73,10 +83,12 @@ WHERE r.REZEPTNR IN (
              JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
              JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
     GROUP BY r.REZEPTNR
-    HAVING SUM((z.KALORIEN / 100.0) * rz.MENGE) <= 700
+    HAVING SUM((z.KALORIEN / 100.0) * rz.MENGE) <= @MaxKalorien
 );
 
 # Auswahl aller Rezepte, die weniger als fünf Zutaten enthalten 
+SET @MaxAnzahlZutaten = 5;
+
 SELECT
     r.*
 FROM REZEPT r
@@ -87,10 +99,14 @@ WHERE r.REZEPTNR IN (
              JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
              JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
     GROUP BY r.REZEPTNR
-    HAVING COUNT(DISTINCT rz.ZUTATNR) < 6
+    HAVING COUNT(DISTINCT rz.ZUTATNR) <= @MaxAnzahlZutaten
 );
 
 # Auswahl aller Rezepte, die weniger als fünf Zutaten enthalten und eine bestimmte Ernährungskategorie erfüllen
+SET @KategorieBezeichnung = 'frutarisch'; -- 'frutarisch', 'vegan', 'vegetarisch', 'fleisch essend'
+SET @KategorieTyp = 'ernährungsart';
+SET @MaxAnzahlZutaten = 5;
+
 SELECT r.*
 FROM REZEPT r
 WHERE NOT EXISTS (
@@ -105,8 +121,8 @@ WHERE NOT EXISTS (
             WHERE e.PRIORITAET >= (
                 SELECT e2.PRIORITAET
                 FROM ERNAEHRUNGSKATEGORIE e2
-                WHERE e2.BEZEICHNUNG = 'frutarisch' -- 'frutarisch', 'vegan', 'vegetarisch', 'fleisch essend'
-            ) AND e.TYP = 'ernährungsart'
+                WHERE e2.BEZEICHNUNG = @KategorieBezeichnung
+            ) AND e.TYP = @KategorieTyp
         )
     )
 ) AND r.REZEPTNR IN (
@@ -116,7 +132,7 @@ WHERE NOT EXISTS (
              JOIN REZEPT_ZUTAT rz ON r.REZEPTNR = rz.REZEPTNR
              JOIN ZUTAT z ON rz.ZUTATNR = z.ZUTATNR
     GROUP BY r.REZEPTNR
-    HAVING COUNT(DISTINCT rz.ZUTATNR) < 6 -- belibige zutaten anzahl
+    HAVING COUNT(DISTINCT rz.ZUTATNR) <= @MaxAnzahlZutaten -- belibige zutaten anzahl
 );
 
 # Weitere Statements:
@@ -133,10 +149,71 @@ FROM
         LEFT JOIN
     BESTELLUNG b ON k.KUNDENNR = b.KUNDENNR;
     
+-- user löschen nach DSGVO
 
-    
+-- hat bestellung:      wellensteyn
+-- keine bestellung:    urocki
+SET @target_username = 'wellensteyn';
+SET @cutoff_date = DATE_SUB(CURDATE(), INTERVAL 10 YEAR);
+#SET @cutoff_date = DATE_SUB(CURDATE(), INTERVAL 8 DAY);
 
+# Hilfe zum Daten auslesen
+SELECT k.KUNDENNR
+FROM kunde k
+WHERE USERNAME = @target_username
+  AND KUNDENNR NOT IN (
+    SELECT b.KUNDENNR
+    FROM bestellung b
+    WHERE b.BESTELLDATUM >= @cutoff_date
+);
 
+SELECT @cutoff_date;
+
+SELECT * FROM kunde k
+WHERE k.USERNAME = @target_username;
+
+SELECT * FROM bestellung b;
+
+SELECT * FROM bestellung b
+JOIN kunde k
+ON b.KUNDENNR = k.KUNDENNR
+WHERE k.KUNDENNR = 2001;
+
+SELECT * FROM login l
+WHERE l.Username = @target_username;
+
+SELECT * FROM bestellung b
+JOIN kunde k
+ON k.KUNDENNR = b.KUNDENNR
+WHERE b.BESTELLDATUM < @cutoff_date AND k.USERNAME = @target_username;
+# Hilfe Ende
+
+# Löscht alle Userdaten außer Namens- und Adressinformationen
+# Löscht die Kundennummer in Bestellungen vor dem Cutoff-date (wegen 10 Jahre Aufbewahrungsfrist)
+UPDATE bestellung b
+JOIN kunde k
+ON k.KUNDENNR = b.KUNDENNR
+SET b.KUNDENNR = NULL
+WHERE b.BESTELLDATUM < @cutoff_date AND k.USERNAME = @target_username;
+UPDATE kunde k2
+SET k2.Geburtsdatum = NULL, k2.email = NULL, k2.telefon = NULL, k2.abo = FALSE, k2.Username = NULL
+WHERE k2.Username = @target_username;
+DELETE FROM login
+WHERE USERNAME = @target_username;
+
+# Löscht alle Kundendaten
+# Nur zu verwenden, wenn keine Bestellungen noch aAufbewahrungspflicht haben
+SET @target_username = 'wellensteyn';
+
+UPDATE bestellung b 
+JOIN kunde k
+ON b.KUNDENNR = k.KUNDENNR
+SET b.KUNDENNR = NULL
+WHERE k.USERNAME = @target_username;
+DELETE FROM kunde
+WHERE USERNAME = @target_username;
+DELETE FROM login
+WHERE USERNAME = @target_username;
 
 -- LACHSLASAGNE KALORIEN
 -- spinat: 46
