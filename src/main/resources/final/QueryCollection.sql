@@ -1,24 +1,28 @@
 # Auswahl aller Zutaten eines Rezepts nach RezeptNr
 SET @RezeptNr = 1;
 
-SELECT * FROM zutat z
-JOIN rezept_zutat rz
+SELECT * FROM ZUTAT z
+JOIN REZEPT_ZUTAT rz
 ON z.ZUTATNR = rz.ZUTATNR
 WHERE rz.REZEPTNR = @RezeptNr;
+
+
 
 # Auswahl aller Zutaten eines Rezepts nach Name (nicht zwingend Eindeutig)
 SET @RezeptName = 'Lachslasagne';
 
-SELECT * FROM zutat z
-JOIN rezept_zutat rz
+SELECT * FROM ZUTAT z
+JOIN REZEPT_ZUTAT rz
 ON z.ZUTATNR = rz.ZUTATNR
 WHERE rz.REZEPTNR IN (
-	SELECT r.REZEPTNR FROM rezept r
+	SELECT r.REZEPTNR FROM REZEPT r
 	WHERE r.`NAME` = @RezeptName
 );
 
+
+
 # Auswahl aller Rezepte einer bestimmten Ernährungskategorie
-SET @KategorieBezeichnung = 'frutarisch';
+SET @KategorieBezeichnung = 'frutarisch';  -- 'frutarisch', 'vegan', 'vegetarisch', 'fleisch essend'
 SET @KategorieTyp = 'ernährungsart';
 
 SELECT r.*
@@ -41,6 +45,8 @@ WHERE NOT EXISTS (
     )
 );
 
+
+
 # Rezepte nach verwendeten Zutaten filtern
 SELECT * FROM REZEPT r
 WHERE r.RezeptNr IN (
@@ -48,27 +54,33 @@ WHERE r.RezeptNr IN (
 	WHERE rz.ZutatNr IN (1001) -- Hier beliebige ZutatenNr angeben
 );
 
-# Berechnung der durschnittlichen Nährwerte einer Bestellung
+
+
+# Berechnung der durschnittlichen Kalorien einer Bestellung
 DROP VIEW IF EXISTS Totals;
 
 CREATE VIEW Totals AS
-SELECT SUM((z.Kalorien / 100) * rz.MENGE) AS Total FROM zutat z
-JOIN rezept_zutat rz
+SELECT SUM((z.Kalorien / 100) * rz.MENGE) AS Total FROM ZUTAT z
+JOIN REZEPT_ZUTAT rz
 ON z.ZUTATNR = rz.ZUTATNR
 WHERE rz.REZEPTNR IN (
-	SELECT br.REZEPTNR FROM bestellung_rezept br
+	SELECT br.REZEPTNR FROM BESTELLUNG_REZEPT br
 	WHERE br.BESTELLNR IN (1001) -- Hier beliebige BestellNr angeben
 )
 GROUP BY rz.REZEPTNR;
 
 SELECT AVG(t.Total) FROM Totals AS t;
 
+
+
 # Die meistbestellten Rezepte
-SELECT br.REZEPTNR, COUNT(br.REZEPTNR) AS Haeufigkeit FROM bestellung_rezept br
-JOIN rezept r
+SELECT br.REZEPTNR, COUNT(br.REZEPTNR) AS Haeufigkeit FROM BESTELLUNG_REZEPT br
+JOIN REZEPT r
 ON br.REZEPTNR = r.REZEPTNR
 GROUP BY br.REZEPTNR
 ORDER BY Haeufigkeit DESC;
+
+
 
 # Auswahl aller Rezepte, die eine bestimmte Kalorienmenge nicht überschreiten 
 SET @MaxKalorien = 700;
@@ -86,6 +98,8 @@ WHERE r.REZEPTNR IN (
     HAVING SUM((z.KALORIEN / 100.0) * rz.MENGE) <= @MaxKalorien
 );
 
+
+
 # Auswahl aller Rezepte, die weniger als fünf Zutaten enthalten 
 SET @MaxAnzahlZutaten = 5;
 
@@ -102,10 +116,12 @@ WHERE r.REZEPTNR IN (
     HAVING COUNT(DISTINCT rz.ZUTATNR) <= @MaxAnzahlZutaten
 );
 
+
+
 # Auswahl aller Rezepte, die weniger als fünf Zutaten enthalten und eine bestimmte Ernährungskategorie erfüllen
 SET @KategorieBezeichnung = 'frutarisch'; -- 'frutarisch', 'vegan', 'vegetarisch', 'fleisch essend'
 SET @KategorieTyp = 'ernährungsart';
-SET @MaxAnzahlZutaten = 5;
+SET @MaxAnzahlZutaten = 4;
 
 SELECT r.*
 FROM REZEPT r
@@ -135,6 +151,8 @@ WHERE NOT EXISTS (
     HAVING COUNT(DISTINCT rz.ZUTATNR) <= @MaxAnzahlZutaten -- belibige zutaten anzahl
 );
 
+
+
 # Weitere Statements:
 
 -- zeige alle kunden mit ihren bestellungen an
@@ -148,86 +166,83 @@ FROM
     KUNDE k
         LEFT JOIN
     BESTELLUNG b ON k.KUNDENNR = b.KUNDENNR;
-    
+
+
+
 -- user löschen nach DSGVO
 
 -- hat bestellung:      wellensteyn
 -- keine bestellung:    urocki
-SET @target_username = 'wellensteyn';
+SET @target_username = 'urocki';
 SET @cutoff_date = DATE_SUB(CURDATE(), INTERVAL 10 YEAR);
 #SET @cutoff_date = DATE_SUB(CURDATE(), INTERVAL 8 DAY);
 
 # Hilfe zum Daten auslesen
 SELECT k.KUNDENNR
-FROM kunde k
+FROM KUNDE k
 WHERE USERNAME = @target_username
   AND KUNDENNR NOT IN (
     SELECT b.KUNDENNR
-    FROM bestellung b
+    FROM BESTELLUNG b
     WHERE b.BESTELLDATUM >= @cutoff_date
 );
 
 SELECT @cutoff_date;
 
-SELECT * FROM kunde k
+SELECT * FROM KUNDE k
 WHERE k.USERNAME = @target_username;
 
-SELECT * FROM bestellung b;
+SELECT * FROM BESTELLUNG b;
 
-SELECT * FROM bestellung b
-JOIN kunde k
+SELECT * FROM BESTELLUNG b
+JOIN KUNDE k
 ON b.KUNDENNR = k.KUNDENNR
 WHERE k.KUNDENNR = 2001;
 
-SELECT * FROM login l
+SELECT * FROM LOGIN l
 WHERE l.Username = @target_username;
 
-SELECT * FROM bestellung b
-JOIN kunde k
+SELECT * FROM BESTELLUNG b
+JOIN KUNDE k
 ON k.KUNDENNR = b.KUNDENNR
 WHERE b.BESTELLDATUM < @cutoff_date AND k.USERNAME = @target_username;
 # Hilfe Ende
 
+
 # Löscht alle Userdaten außer Namens- und Adressinformationen
 # Löscht die Kundennummer in Bestellungen vor dem Cutoff-date (wegen 10 Jahre Aufbewahrungsfrist)
-UPDATE bestellung b
-JOIN kunde k
+-- hat bestellung:      wellensteyn
+-- keine bestellung:    urocki
+SET @target_username = 'urocki';
+SET @cutoff_date = DATE_SUB(CURDATE(), INTERVAL 10 YEAR);
+
+UPDATE BESTELLUNG b
+JOIN KUNDE k
 ON k.KUNDENNR = b.KUNDENNR
 SET b.KUNDENNR = NULL
 WHERE b.BESTELLDATUM < @cutoff_date AND k.USERNAME = @target_username;
-UPDATE kunde k2
+UPDATE KUNDE k2
 SET k2.Geburtsdatum = NULL, k2.email = NULL, k2.telefon = NULL, k2.abo = FALSE, k2.Username = NULL
 WHERE k2.Username = @target_username;
-DELETE FROM login
+DELETE FROM LOGIN
 WHERE USERNAME = @target_username;
 
+
 # Löscht alle Kundendaten
-# Nur zu verwenden, wenn keine Bestellungen noch aAufbewahrungspflicht haben
+# Nur zu verwenden, wenn keine Bestellungen noch Aufbewahrungspflicht haben
 SET @target_username = 'wellensteyn';
 
-UPDATE bestellung b 
-JOIN kunde k
+UPDATE BESTELLUNG b
+JOIN KUNDE k
 ON b.KUNDENNR = k.KUNDENNR
 SET b.KUNDENNR = NULL
 WHERE k.USERNAME = @target_username;
-DELETE FROM kunde
+DELETE FROM KUNDE
 WHERE USERNAME = @target_username;
-DELETE FROM login
+DELETE FROM LOGIN
 WHERE USERNAME = @target_username;
 
--- LACHSLASAGNE KALORIEN
--- spinat: 46
--- lachs: 250
--- nudeln: 60
--- mehl: 4,5
--- sahne: 75
--- parmesan: 14
--- zitrone: 12
--- käse: 148
--- milch: 40
--- buttler: 89
--- brühe: 0,3
--- = ca. 738,5
+
 
 
 
