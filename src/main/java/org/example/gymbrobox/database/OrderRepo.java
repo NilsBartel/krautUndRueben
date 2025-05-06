@@ -19,11 +19,11 @@ public class OrderRepo {
     }
 
 
-    public boolean placeOrder(List<String> rezepte, String username) {
+    public boolean placeOrder(Map<String, Integer> rezepte, String username) {
 
         String sql_bestellNr = "SELECT COALESCE(MAX(BESTELLNR), 0) + 1 AS NEUE_BESTELLNR FROM BESTELLUNG;";
         String sql_bestellung = "INSERT INTO BESTELLUNG (BESTELLNR, KUNDENNR, BESTELLDATUM) SELECT :bestellNr, K.KUNDENNR, CURRENT_DATE() FROM KUNDE K WHERE K.USERNAME = :userName;";
-        String sql_bestellung_rezept = "INSERT INTO BESTELLUNG_REZEPT (BESTELLNR, REZEPTNR, PORTIONEN) SELECT :bestellNr, r.REZEPTNR, 1 FROM REZEPT r WHERE NAME = :rezeptName";
+        String sql_bestellung_rezept = "INSERT INTO BESTELLUNG_REZEPT (BESTELLNR, REZEPTNR, PORTIONEN) SELECT :bestellNr, r.REZEPTNR, :portion FROM REZEPT r WHERE NAME = :rezeptName";
 
         int bestellNr = jdbcTemplate.queryForObject(sql_bestellNr, Integer.class);
         Map<String, Object> params = new HashMap<>();
@@ -33,8 +33,15 @@ public class OrderRepo {
         template.update(sql_bestellung, params);
         params.remove("userName");
 
-        for (String rezept : rezepte) {
-            params.put("rezeptName", rezept);
+//        for (String rezept : rezepte) {
+//            params.put("rezeptName", rezept);
+//            template.update(sql_bestellung_rezept, params);
+//            params.remove("rezeptName");
+//        }
+
+        for (Map.Entry<String, Integer> entry : rezepte.entrySet()) {
+            params.put("rezeptName", entry.getKey());
+            params.put("portion", entry.getValue());
             template.update(sql_bestellung_rezept, params);
             params.remove("rezeptName");
         }

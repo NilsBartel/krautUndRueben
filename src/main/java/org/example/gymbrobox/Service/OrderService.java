@@ -6,9 +6,7 @@ import org.example.gymbrobox.model.BoxRequest;
 import org.example.gymbrobox.model.Rezept;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -36,7 +34,24 @@ public class OrderService {
             return false;
         }
 
-        return orderRepo.placeOrder(allRecipes, userName);
+
+
+        return orderRepo.placeOrder(createRecipeMap(allRecipes), userName);
+    }
+
+    private Map<String, Integer> createRecipeMap(List<String> recipes) {
+
+        Map<String, Integer> map = new HashMap<>();
+
+        for (String recipe : recipes) {
+            if (!map.containsKey(recipe)) {
+                map.put(recipe, 1);
+            }
+            else {
+                map.put(recipe, map.get(recipe) + 1);
+            }
+        }
+        return map;
     }
 
 }
